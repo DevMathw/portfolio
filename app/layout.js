@@ -14,7 +14,7 @@ const monda = Monda({
 });
 
 export const metadata = {
-  title: "codeByMatthew",
+  title: "matt.dev",
   description: "",
 };
 

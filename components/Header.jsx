@@ -1,81 +1,65 @@
+'use client'
+
 import { assets } from '@/assets/assets'
 import Image from 'next/image'
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
-import Magnetic from '@/components/Magnetic'
-
-
 
 const Header = () => {
+  const useTypewriter = (text, speed = 90, pause = 1200) => {
+    const [index, setIndex] = useState(0)
+    const [deleting, setDeleting] = useState(false)
 
-    const { useEffect, useState, useMemo } = React;
-    const useTypewriter = (text, speed = 100, pause = 500) => {
-        const [index, setIndex] = useState(0);
-        const [isDeleting, setIsDeleting] = useState(false);
-    
-        const displayText = useMemo(() => text.slice(0, index), [index]);
-    
-        useEffect(() => {
-            let timeoutId;
+    const display = useMemo(() => text.slice(0, index), [index])
 
-            if (!isDeleting && index === text.length) {
-                timeoutId = setTimeout(() => setIsDeleting(true), pause);
-            } else if (isDeleting && index === 1) {
-                timeoutId = setTimeout(() => setIsDeleting(false), pause);
-            } else {
-                timeoutId = setTimeout(() => {
-                    setIndex((prevIndex) =>
-                        isDeleting ? prevIndex - 1 : prevIndex + 1
-                    );
-                }, speed);
-            }
-    
-            return () => clearTimeout(timeoutId);
-        }, [index, isDeleting, text, speed, pause]);
-    
-        return displayText;
-    };
+    useEffect(() => {
+      const timeout = setTimeout(() => {
+        if (!deleting && index === text.length) 
+        {
+          setDeleting(true)
+        } 
+        else if (deleting && index === 0) 
+        {
+          setDeleting(false)
+        }
+        else 
+        {
+          setIndex((i) => (deleting ? i - 1 : i + 1))
+        }
+      }, deleting ? speed / 2 : speed)
 
+      return () => clearTimeout(timeout)
+    }, [index, deleting, text, speed])
 
-    const text = useTypewriter("Crafting the future in code...", 100, 500);
-    return (
+    return display
+  }
 
-        <div id='top' className='w-11/12 max-w-3xl text-center mx-auto h-screen flex flex-col items-center justify-center gap-4'>
-            <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.8, type: 'spring' }}
-            >
-                <Image src={assets.profile_img} alt='' className='rounded-full w-36' />
-            </motion.div>
-            <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="flex items-center gap-2 text-xl md:text-2xl mb-3 font-Monda"
-            >
-                Hi! I'm Mateo
-                <Image src={assets.hand_icon} alt="" className="w-6" />
-            </motion.h1>
-            <h2 className='text-3xl sm:text-6xl lg:text-[48px] font-Monda'>
-                {text}
-            </h2>
-            <div className='flex flex-col sm:flex-row items-center gap-4 mt-4'>
-                <Magnetic>
-                    <a href="#contact" className='px-10 py-3 border border-white rounded-full bg-black 
-                    text-white flex items-center gap-2 dark:bg-transparent '>
-                        Contact me
-                        <Image src={assets.right_arrow_white} alt='' className='w-4' />
-                    </a>
-                </Magnetic>
-                <a href="/sample-resume.pdf" download className='px-10 py-3 border rounded-full border-gray-500 
-                flex items-center gap-2 bg-white dark:text-black'>
-                    Download CV
-                    <Image src={assets.download_icon} alt='' className='w-4' />
-                </a>
-            </div>
-        </div>     
-    )
+  const text = useTypewriter('Building clean, modern web experiences.')
+
+  return (
+    <section id="top" className="h-screen flex flex-col justify-center items-center text-center gap-6 px-6">
+      <motion.div initial={{ scale: 0, rotate: -10 }} animate={{ scale: 1, rotate: 0 }} transition={{ duration: 0.8, type: 'spring' }}>
+        <Image src={assets.profile_img} alt="Mateo profile" className="w-36 rounded-full shadow-lg"/>
+      </motion.div>
+      <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-xl md:text-2xl font-Monda flex items-center gap-2">
+        Hi, I’m Mateo
+      </motion.h1>
+      <motion.h2 initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-lg sm:text-3xl lg:text-[36px] font-Monda max-w-3xl">
+        {text}
+        <span className="text-greenPrimary">|</span>
+      </motion.h2>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="flex flex-col sm:flex-row gap-4 mt-6">
+        <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="px-10 py-3 rounded-full bg-black text-white hover:bg-black/90 transition">
+          Contact me
+        </button>
+        <a href="/assets/public/cv_mat_en.pdf" download className="px-10 py-3 rounded-full border border-gray-400 hover:bg-greenPrimary hover:text-white hover:border-greenPrimary dark:hover:bg-white dark:hover:text-black transition dark:text-white dark:border-white">
+          Download CV
+        </a>
+      </motion.div>
+    </section>
+  )
 }
 
 export default Header
+
+

@@ -1,25 +1,39 @@
-import { assets } from '@/assets/assets'
-import Image from 'next/image'
-import React from 'react'
+'use client'
 
-const Footer = ({isDarkMode}) => {
+import { Github, Linkedin, Mail } from 'lucide-react'
+import { motion } from 'framer-motion'
+
+const Footer = () => {
   return (
-    <div className='mt-20'>
-        <div className='text-center'>
-            <Image src={isDarkMode ? assets.logo_dark : assets.logo} alt='' className='w-36 mx-auto mb-2'/>
+    <footer className="relative mt-20 border-t border-gray-200 dark:border-white/20">
+      <div className="max-w-6xl mx-auto px-6 py-14">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-center md:text-left">
+            <div className="font-bold text-xl tracking-wide">
+              matt.dev
+              <span className="text-greenPrimary">.</span>
+            </div>
+            <div className="text-center text-sm text-gray-500 dark:text-gray-400">
+              © {new Date().getFullYear()}. All rights reserved.
+            </div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.6 }} viewport={{ once: true }} className="flex gap-6">
+            <a href="https://github.com/DevMathw" target="_blank" rel="noopener noreferrer" aria-label="GitHub"className="group">
+              <Github size={22} className="text-gray-600 dark:text-gray-300 group-hover:text-greenPrimary transition-transform duration-300 group-hover:scale-110"/>
+            </a>
+            <a href="https://www.linkedin.com/in/mateo-garcia-rodriguez-933135207/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"className="group">
+              <Linkedin size={22} className="text-gray-600 dark:text-gray-300 group-hover:text-greenPrimary transition-transform duration-300 group-hover:scale-110"/>
+            </a>
+            <a href="mailto:mateogarcia13.mg@gmail.com" aria-label="Email" className="group">
+              <Mail size={22} className="text-gray-600 dark:text-gray-300 group-hover:text-greenPrimary transition-transform duration-300 group-hover:scale-110"/>
+            </a>
+          </motion.div>
         </div>
-
-        <div className='text-center sm:flex items-center justify-between border-t border-gray-400 mx-[10%] mt-12 py-6'>   
-            <p>@ 2026 matt.dev. All rights reserved</p>
-            <ul className='flex items-center gap-10 justify-center mt-4 sm:mt-0'>
-                <li><a target='_blank' href='https://instagram.com/greatstackdev'>Github</a></li>
-                <li><a target='_blank' href='https://instagram.com/greatstackdev'>LinkedIn</a></li>
-                <li><a target='_blank' href='https://instagram.com/greatstackdev'>Twitter</a></li>
-                <li><a target='_blank' href='https://instagram.com/greatstackdev'>Instagram</a></li>
-            </ul>
-        </div>
-    </div>
+      </div>
+    </footer>
   )
 }
 
 export default Footer
+
+

@@ -46,34 +46,76 @@
   100% { opacity: 0; transform: scale(0.5); }
 }
 
-.menu-active {
-  background: rgb(51 193 204);
-  color: white;
-  padding: 4px 10px;
-  border-radius: 10px;
-  animation: menuPop 0.25s ease;
+/* ===============================
+   NAVBAR SCROLL EFFECT
+================================ */
+.nav-scrolled {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  animation: navDrop 0.35s ease;
 }
 
-@keyframes menuPop {
+.dark .nav-scrolled {
+  background: rgba(15, 15, 15, 0.6);
+}
+
+/* ===============================
+   ACTIVE MENU LINK
+================================ */
+.menu-active {
+  position: relative;
+  font-weight: 600;
+}
+
+.menu-active::after {
+  content: '';
+  position: absolute;
+  left: 10%;
+  bottom: -6px;
+  width: 80%;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  animation: slideIn 0.3s ease forwards;
+}
+
+/* ===============================
+   ANIMATIONS
+================================ */
+@keyframes slideIn {
   from {
-    transform: scale(0.85);
+    width: 0;
     opacity: 0;
   }
   to {
-    transform: scale(1);
+    width: 80%;
     opacity: 1;
   }
 }
 
+@keyframes navDrop {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 
-/* .menu-active::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: -6px;
-  width: 6px;
-  height: 6px;
-  background: currentColor;
-  border-radius: 9999px;
-  transform: translateX(-50%);
-} */
+/* ===============================
+   REDUCED MOTION SUPPORT
+================================ */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+.owl-glow {
+  filter: drop-shadow(0 0 12px rgba(51,193,204,.5));
+}
+

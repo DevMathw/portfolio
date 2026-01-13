@@ -12,8 +12,7 @@ const Work = ({ isDarkMode }) => {
         Selected Work
       </motion.h2>
       <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.6 }} className="text-center max-w-2xl mx-auto mb-14 font-Monda text-gray-600 dark:text-gray-300">
-        A selection of projects that showcase my skills in frontend development,
-        UI design, and real-world problem solving.
+        A selection of projects that show my skills in full-stack development, including frontend interfaces, backend logic, and real-world problem solving.
       </motion.p>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {workData.map((project, index) => (

@@ -34,7 +34,7 @@ const Header = () => {
     return display
   }
 
-  const text = useTypewriter('Building clean, modern web experiences.')
+  const text = useTypewriter('Building clean and modern web solutions.')
 
   return (
     <section id="top" className="h-screen flex flex-col justify-center items-center text-center gap-6 px-6">

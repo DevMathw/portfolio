@@ -13,7 +13,7 @@ const About = () => {
       </motion.h2>
       <div className="flex flex-col lg:flex-row gap-20 items-center">
         <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}className="w-72">
-            <Image src={assets.user_image} alt="Mateo" className="rounded-3xl shadow-lg" />
+            <Image src={assets.user_image} alt="mat.dev about" priority className="rounded-3xl shadow-lg" />
         </motion.div>
         <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }} className="flex-1">
           <p className="mb-10 max-w-2xl text-gray-700 dark:text-gray-300 font-Monda">

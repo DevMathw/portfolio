@@ -39,7 +39,7 @@ const Header = () => {
   return (
     <section id="top" className="h-screen flex flex-col justify-center items-center text-center gap-6 px-6">
       <motion.div initial={{ scale: 0, rotate: -10 }} animate={{ scale: 1, rotate: 0 }} transition={{ duration: 0.8, type: 'spring' }}>
-        <Image src={assets.profile_img} alt="Mateo profile" className="w-36 rounded-full shadow-lg"/>
+        <Image src={assets.profile_img} className="w-36 rounded-full shadow-lg" priority alt="mat.dev profile"/>
       </motion.div>
       <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-xl md:text-2xl font-Monda flex items-center gap-2">
         Hi, I’m Mateo

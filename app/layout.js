@@ -14,9 +14,15 @@ const monda = Monda({
 });
 
 export const metadata = {
-  title: "matt.dev",
-  description: "",
-};
+  title: "mat.dev — Fullstack Developer",
+  description: "Portafolio de Mat: React, Next.js, PHP, Python, Node.js.",
+  openGraph: {
+    title: "Portafolio de Mat",
+    description: "Fullstack Developer — React, Next.js, PHP, Python, Node.js",
+    images: ["/og.png"],
+  },
+}
+
 
 export default function RootLayout({ children }) {
   return (

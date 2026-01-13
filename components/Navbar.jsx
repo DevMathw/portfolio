@@ -69,15 +69,15 @@ const Navbar = ({ isDarkMode, setIsDarkMode }) => {
       </ul>
       <div className="flex items-center gap-4">
         <button onClick={() => setIsDarkMode((p) => !p)}>
-          <Image src={isDarkMode ? assets.sun_icon : assets.moon_icon} alt="theme" className="w-6 transition-transform duration-500 hover:rotate-180"/>
+          <Image src={isDarkMode ? assets.sun_icon : assets.moon_icon} alt="theme" priority className="w-6 transition-transform duration-500 hover:rotate-180"/>
         </button>
         <button className="block md:hidden" onClick={openMenu}>
-          <Image src={isDarkMode ? assets.menu_white : assets.menu_black} alt="menu"className="w-6"/>
+          <Image src={isDarkMode ? assets.menu_white : assets.menu_black} alt="menu" priority className="w-6"/>
         </button>
       </div>
       <ul ref={sideMenuRef} className="fixed top-0 right-0 w-full h-screen bg-white dark:bg-darkTheme z-50 flex flex-col items-center gap-6 pt-24 shadow-lg transition-transform duration-500 translate-x-full">
         <div className="absolute top-6 right-6 cursor-pointer" onClick={closeMenu}>
-          <Image src={isDarkMode ? assets.close_white : assets.close_black} alt="close" className="w-5"/>
+          <Image src={isDarkMode ? assets.close_white : assets.close_black} alt="close" priority className="w-5"/>
         </div>
         {sections.map((item) => (
           <li key={item} onClick={() => scrollToSection(item)} className={`font-Monda text-lg cursor-pointer hover:text-greenPrimary transition ${activeSection === item ? 'menu-active' : ''}`} >

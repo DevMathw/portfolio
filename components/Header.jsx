@@ -52,7 +52,7 @@ const Header = () => {
         <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="px-10 py-3 rounded-full bg-black text-white hover:bg-black/90 transition">
           Contact me
         </button>
-        <a href="/assets/public/cv_mat_en.pdf" download className="px-10 py-3 rounded-full border border-gray-400 hover:bg-greenPrimary hover:text-white hover:border-greenPrimary dark:hover:bg-white dark:hover:text-black transition dark:text-white dark:border-white">
+        <a href="/cv_mat_en.pdf" download className="px-10 py-3 rounded-full border border-gray-400 hover:bg-greenPrimary hover:text-white hover:border-greenPrimary dark:hover:bg-white dark:hover:text-black transition dark:text-white dark:border-white">
           Download CV
         </a>
       </motion.div>

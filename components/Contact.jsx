@@ -115,22 +115,22 @@ const Contact = () => {
       <form onSubmit={onSubmit} className="max-w-2xl mx-auto">
         <RevealGroup>
           <RevealItem>
-            <label className="block mb-2 font-Monda">Name</label>
-            <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={`w-full p-2 rounded-md border ${submitted && errors.name ? 'border-red-500' : 'border-gray-400'} outline-none focus:ring-2 focus:ring-greenPrimary dark:bg-darkHover/30 dark:border-white/80`}/>
+            <label className="block mb-2 font-Monda" htmlFor='name'>Name</label>
+            <input type="text" id="name" name="name" autoComplete="off" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className={`w-full p-2 rounded-md border ${submitted && errors.name ? 'border-red-500' : 'border-gray-400'} outline-none focus:ring-2 focus:ring-greenPrimary dark:bg-darkHover/30 dark:border-white/80`}/>
             {submitted && errors.name && (
               <p className="text-red-500 text-sm mt-1">{errors.name}</p>
             )}
           </RevealItem>
           <RevealItem>
-            <label className="block mb-2 mt-4 font-Monda">Email</label>
-            <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className={`w-full p-2 rounded-md border ${submitted && errors.email ? 'border-red-500' : 'border-gray-400'} outline-none focus:ring-2 focus:ring-greenPrimary dark:bg-darkHover/30 dark:border-white/80`}/>
+            <label className="block mb-2 mt-4 font-Monda" htmlFor='email'>Email</label>
+            <input type="email" id="email" name="email" autoComplete="off" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className={`w-full p-2 rounded-md border ${submitted && errors.email ? 'border-red-500' : 'border-gray-400'} outline-none focus:ring-2 focus:ring-greenPrimary dark:bg-darkHover/30 dark:border-white/80`}/>
             {submitted && errors.email && (
               <p className="text-red-500 text-sm mt-1">{errors.email}</p>
             )}
           </RevealItem>
           <RevealItem>
-            <label className="block mb-2 mt-4 font-Monda">Message</label>
-            <textarea rows="4"value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className={`w-full p-4 rounded-md border ${submitted && errors.message ? 'border-red-500' : 'border-gray-400'} outline-none focus:ring-2 focus:ring-greenPrimary dark:bg-darkHover/30 dark:border-white/80`}/>
+            <label className="block mb-2 mt-4 font-Monda" htmlFor='message'>Message</label>
+            <textarea rows="4" id="message" name="message" value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className={`w-full p-4 rounded-md border ${submitted && errors.message ? 'border-red-500' : 'border-gray-400'} outline-none focus:ring-2 focus:ring-greenPrimary dark:bg-darkHover/30 dark:border-white/80`}/>
             {submitted && errors.message && (
               <p className="text-red-500 text-sm mt-1">{errors.message}</p>
             )}

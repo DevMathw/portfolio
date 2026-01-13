@@ -1,5 +1,5 @@
 import user_image from './user-image.png';
-import profile_img from './profile_pic.png';
+import profile_img from './profile_pic.webp';
 import download_icon from './download-icon.png';
 import moon_icon from './moon_icon.png';
 import sun_icon from './sun_icon.png';

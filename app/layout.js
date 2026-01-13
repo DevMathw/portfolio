@@ -14,11 +14,11 @@ const monda = Monda({
 });
 
 export const metadata = {
-  title: "mat.dev — Fullstack Developer",
+  title: "mat.dev | Fullstack Developer",
   description: "Portafolio de Mat: React, Next.js, PHP, Python, Node.js.",
   openGraph: {
     title: "Portafolio de Mat",
-    description: "Fullstack Developer — React, Next.js, PHP, Python, Node.js",
+    description: "Fullstack Developer | React, Next.js, PHP, Python, Node.js",
     images: ["/og.png"],
   },
 }

@@ -12,7 +12,7 @@ const MobileNav = ({ sections, activeSection, onNavigate }) => {
                     return (
                         <button key={id} onClick={() => onNavigate(id)} aria-label={label} aria-current={isActive ? 'true' : undefined} className="relative flex flex-col items-center justify-center">
     
-                        <motion.div animate={{ scale: isActive ? 1.15 : 1 }} transition={{ type: 'spring', stiffness: 300 }} className={`p-2 rounded-full transition-colors ${ isActive ? 'bg-green-700 text-white dark:bg-green-400 dark:text-black' : 'text-gray-600 dark:text-gray-300' }`}>
+                        <motion.div animate={{ scale: isActive ? 1.15 : 1 }} transition={{ type: 'spring', stiffness: 300 }} className={`p-2 rounded-full transition-colors ${ isActive ? 'text-green-900 dark:text-green-400' : 'text-gray-600 dark:text-gray-300' }`}>
                             <Icon size={22} />
                         </motion.div>
 

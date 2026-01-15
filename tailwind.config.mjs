@@ -13,7 +13,9 @@ export default {
         lightHover: '#fcf4ff',
         darkHover: '#1E1E2F',
         darkTheme: '#303030',
-        greenPrimary: '#33C1CC'
+        greenPrimary: '#33C1CC',
+        green700: '#1F8E96',
+        green400: '#33C1CC'
       },
       fontFamily:{
         Outfit: ["Outfit", "sans-serif"],

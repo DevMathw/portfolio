@@ -136,7 +136,7 @@ const Contact = () => {
             <label htmlFor="name" className="block mb-2 font-Monda">
               Name
             </label>
-            <input id="name" type="text" value={form.name} autoComplete="off" onChange={(e) => setForm({ ...form, name: e.target.value })} aria-invalid={submitted && !!errors.name} className={`w-full p-2 rounded-md border outline-none focus:ring-2 focus:ring-green-700 dark:bg-darkHover/30 dark:border-white/80 ${submitted && errors.name ? 'border-red-500' : 'border-gray-400'}`}/>
+            <input id="name" type="text" value={form.name} autoComplete="off" onChange={(e) => setForm({ ...form, name: e.target.value })} aria-invalid={submitted && !!errors.name} className={`w-full p-2 rounded-md border outline-none focus:ring-2 focus:ring-green700 dark:bg-darkHover/30 dark:border-white/80 ${submitted && errors.name ? 'border-red-500' : 'border-gray-400'}`}/>
             <div className="flex justify-between mt-1 text-xs opacity-60"> {submitted && errors.name && ( <span className="text-red-500">{errors.name}</span> )}
               <span>{form.name.length}/{MAX.name}</span>
             </div>
@@ -145,7 +145,7 @@ const Contact = () => {
             <label htmlFor="email" className="block mb-2 mt-6 font-Monda">
               Email
             </label>
-            <input id="email" type="email" value={form.email} autoComplete="off" onChange={(e) => setForm({ ...form, email: e.target.value }) } aria-invalid={submitted && !!errors.email} className={`w-full p-2 rounded-md border outline-none focus:ring-2 focus:ring-green-700 dark:bg-darkHover/30 dark:border-white/80 ${submitted && errors.email ? 'border-red-500' : 'border-gray-400'}`} />
+            <input id="email" type="email" value={form.email} autoComplete="off" onChange={(e) => setForm({ ...form, email: e.target.value }) } aria-invalid={submitted && !!errors.email} className={`w-full p-2 rounded-md border outline-none focus:ring-2 focus:ring-green700 dark:bg-darkHover/30 dark:border-white/80 ${submitted && errors.email ? 'border-red-500' : 'border-gray-400'}`} />
             <div className="flex justify-between mt-1 text-xs opacity-60">{submitted && errors.email && ( <span className="text-red-500">{errors.email}</span> )}
               <span>{form.email.length}/{MAX.email}</span>
             </div>
@@ -154,7 +154,7 @@ const Contact = () => {
             <label htmlFor="message" className="block mb-2 mt-6 font-Monda">
               Message
             </label>
-            <textarea id="message" rows={5} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value }) } aria-invalid={submitted && !!errors.message} className={`w-full p-3 rounded-md border outline-none focus:ring-2 focus:ring-green-700 dark:bg-darkHover/30 dark:border-white/80 ${submitted && errors.message ? 'border-red-500' : 'border-gray-400'}`}/>
+            <textarea id="message" rows={5} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value }) } aria-invalid={submitted && !!errors.message} className={`w-full p-3 rounded-md border outline-none focus:ring-2 focus:ring-green700 dark:bg-darkHover/30 dark:border-white/80 ${submitted && errors.message ? 'border-red-500' : 'border-gray-400'}`}/>
             <div className="flex justify-between mt-1 text-xs opacity-60 d"> {submitted && errors.message && ( <span className="text-red-500">{errors.message}</span> )}
               <span>{form.message.length}/{MAX.message}</span>
             </div>

@@ -32,7 +32,7 @@ const Work = () => {
 
                 <div className="flex gap-3">
                   {project.demo && (
-                    <a href={project.demo} target="_blank" rel="noopener noreferrer" className="px-4 py-2 text-sm rounded-full bg-white text-black font-medium hover:bg-green-700 hover:text-white transition" >
+                    <a href={project.demo} target="_blank" rel="noopener noreferrer" className="px-4 py-2 text-sm rounded-full bg-white text-black font-medium hover:bg-green700 hover:text-white transition" >
                       Live
                     </a>
                   )}
@@ -49,7 +49,7 @@ const Work = () => {
       </div>
 
       <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="flex justify-center mt-20" >
-        <a href="https://github.com/DevMathw" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-10 py-3 rounded-full border border-gray-400 text-gray-700 dark:text-white dark:border-white hover:bg-green-700 hover:text-white hover:border-green-700 dark:hover:bg-green-400 dark:hover:text-black transition">
+        <a href="https://github.com/DevMathw" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-10 py-3 rounded-full border border-gray-400 text-gray-700 dark:text-white dark:border-white hover:bg-green700 hover:text-white hover:border-green700 dark:hover:bg-green400 dark:hover:text-black transition">
           View more on GitHub
         </a>
       </motion.div>

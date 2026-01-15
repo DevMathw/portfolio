@@ -14,7 +14,7 @@ const Header = () => {
       </motion.h1>
       <motion.h2 initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.4 }} className="mt-3 text-lg sm:text-3xl lg:text-[36px] font-Monda max-w-3xl leading-tight text-gray-900 dark:text-gray-100">
         Fullstack Developer building{' '}
-        <span className="font-semibold text-green-700 dark:text-green-400">
+        <span className="font-semibold text-green700 dark:text-green400">
           modern web applications
         </span>
       </motion.h2>
@@ -23,7 +23,7 @@ const Header = () => {
         <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="px-10 py-3 rounded-full bg-black text-white hover:bg-black/90 transition">
           Contact me
         </button>
-        <a href="/cv_mat_en.pdf" download className="px-10 py-3 rounded-full border border-gray-400 hover:bg-green-700 hover:text-white hover:border-green-700 dark:hover:bg-green-400 dark:hover:text-black transition dark:text-white dark:border-white">
+        <a href="/cv_mat_en.pdf" download className="px-10 py-3 rounded-full border border-gray-400 hover:bg-green700 hover:text-white hover:border-green700 dark:hover:bg-green400 dark:hover:text-black transition dark:text-white dark:border-white">
           Download CV
         </a>
       </motion.div>

@@ -21,7 +21,7 @@ const Footer = () => {
             className="text-center md:text-left"
           >
             <div className="font-semibold text-xl tracking-wide">
-              matt<span className="text-green-700 dark:text-green-400">.dev</span>
+              matt<span className="text-green700 dark:text-green400">.dev</span>
             </div>
 
             <p className="mt-2 max-w-sm text-sm text-gray-600 dark:text-gray-400">
@@ -71,8 +71,8 @@ const Footer = () => {
                   border border-gray-300 dark:border-white/30
                   text-gray-600 dark:text-gray-300
                   transition-all duration-300
-                  group-hover:border-green-700 dark:group-hover:border-green-400
-                  group-hover:text-green-700 dark:group-hover:text-green-400
+                  group-hover:border-green700 dark:group-hover:border-green400
+                  group-hover:text-green700 dark:group-hover:text-green400
                   group-hover:-translate-y-1"
                 >
                   <Icon size={18} />

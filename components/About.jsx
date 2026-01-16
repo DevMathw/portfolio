@@ -1,27 +1,42 @@
 'use client'
 
-import { assets, infoList } from '@/assets/assets'
-import Image from 'next/image'
 import React from 'react'
 import { motion } from 'framer-motion'
+import DevOrb from '@/components/DevOrb'
+import { infoList } from '@/assets/assets'
+
+const container = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.08,
+    },
+  },
+}
+
+const item = {
+  hidden: { opacity: 0, y: 18 },
+  show: { opacity: 1, y: 0 },
+}
 
 const About = () => {
   return (
-    <section id="about" className="w-full px-[12%] py-20 scroll-mt-24">
-      <motion.h2 initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-center text-5xl font-Ovo mb-16">
-        About me
+    <section id="about" className="w-full px-[12%] py-24 scroll-mt-24" aria-labelledby="about-title" >
+      <motion.h2 id="about-title" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-center text-5xl font-Ovo mb-12">
+        About Me
       </motion.h2>
       <div className="flex flex-col lg:flex-row gap-20 items-center">
-        <motion.div initial={{ opacity: 0, x: -32 }} whileInView={{ opacity: 1, x: 0 }}mviewport={{ once: true }} transition={{ duration: 0.5 }} className="w-72 shrink-0">
-          <Image src={assets.user_image} alt="Mateo Garcia – Fullstack Developer" priority className="rounded-3xl shadow-lg"/>
+        <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="flex justify-center w-full lg:w-auto mb-16">
+          <DevOrb />
         </motion.div>
-        <motion.div initial={{ opacity: 0, x: 32 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="flex-1">
-          <p className="mb-10 max-w-3xl text-gray-700 dark:text-gray-300 font-Monda leading-relaxed">
-            I’m a full-stack developer with 3 years of experience building modern web applications. 
-            I work on both frontend and backend, creating clean user interfaces, reliable APIs, and scalable solutions.
-            I enjoy solving real problems and turning ideas into simple, efficient products.
+        <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="flex-1" >
+          <p className="max-w-3xl text-gray-700 dark:text-gray-300 font-Monda leading-relaxed mb-12">
+            I’m a full-stack developer with 3 years of experience building modern
+            web applications. I work across frontend and backend, creating clean
+            user interfaces, reliable APIs, and scalable solutions focused on
+            real-world problems.
           </p>
-          <motion.ul initial="hidden" whileInView="show" viewport={{ once: true }} variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08, }, },}} className="max-w-3xl grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-10 mt-12">
+          <motion.ul variants={container} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-5" aria-label="Technical skills" >
             {infoList.map(({ icon: Icon, title, percentage }, index) => (
               <motion.li key={index} variants={{ hidden: { opacity: 0, y: 16 },show: { opacity: 1, y: 0 }, }} className="group flex flex-col items-center gap-3 cursor-pointer">
                 <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-white/10 transition-transform duration-300 group-hover:scale-110">

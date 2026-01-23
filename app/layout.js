@@ -27,29 +27,23 @@ export const metadata = {
   other: {
     google: "notranslate",
   },
+  alternates:
+  {
+    en: '/',
+    es: '/?lang=es'
+  }
 }
+
+import {LanguageProvider} from '@/components/context/LanguageContext';
 
 export default function RootLayout({ children }) {
   return (
-    <html
-      lang="en"
-      translate="no"
-      className="scroll-smooth"
-    >
-      <body
-        className={`
-          ${outfit.className}
-          ${ovo.className}
-          ${monda.className}
-          antialiased
-          leading-8
-          overflow-x-hidden
-          dark:bg-darkTheme
-          dark:text-white
-        `}
-      >
+    <html lang="en" translate="no" className="scroll-smooth">
+      <body className={`${outfit.className} ${ovo.className} ${monda.className} antialiased leading-8 overflow-x-hidden dark:bg-darkTheme dark:text-white `}>
         <main id="main-content">
-          {children}
+          <LanguageProvider >
+            {children}
+          </LanguageProvider>
         </main>
       </body>
     </html>

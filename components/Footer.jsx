@@ -1,60 +1,54 @@
-'use client'
+/**
+ * Footer — versión mejorada
+ * - Layout limpio con tres columnas
+ * - Bio corta + copyright + links
+ * - Monospace para el logo
+ */
 
-import { Github, Linkedin, Mail } from 'lucide-react'
-import { motion } from 'framer-motion'
-import { useLanguage } from '@/components/hooks/useLanguage'
+export default function Footer({ language }) {
+  const content = {
+    en: {
+      bio:  "Full-stack developer · Clean, scalable, accessible web.",
+      copy: `© ${new Date().getFullYear()}. All rights reserved.`,
+      links: [
+        { label: "GitHub",   href: "https://github.com/DevMathw" },
+        { label: "LinkedIn", href: "https://linkedin.com" },
+        { label: "Email",    href: "mailto:hello@mat.dev" },
+      ],
+    },
+    es: {
+      bio:  "Desarrollador full-stack · Web limpia, escalable y accesible.",
+      copy: `© ${new Date().getFullYear()}. Todos los derechos reservados.`,
+      links: [
+        { label: "GitHub",   href: "https://github.com/DevMathw" },
+        { label: "LinkedIn", href: "https://linkedin.com" },
+        { label: "Email",    href: "mailto:hello@mat.dev" },
+      ],
+    },
+  };
 
-const Footer = () => {
-  const { t } = useLanguage()
+  const t = content[language] || content.en;
 
   return (
-    <footer role="contentinfo"className="relative mt-24 border-t border-gray-200 dark:border-white/20">
-      <div className="max-w-6xl mx-auto px-6 py-16">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-10">
-          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-center md:text-left" >
-            <div className="font-semibold text-xl tracking-wide">
-              matt<span className="text-green700 dark:text-green400">.dev</span>
-            </div>
-
-            <p className="mt-2 max-w-sm text-sm text-gray-600 dark:text-gray-400">
-              {t.footer.description}
-            </p>
-
-            <p className="mt-4 text-xs text-gray-500 dark:text-gray-500">
-              © {new Date().getFullYear()}. {t.footer.rights}
-            </p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.6 }} viewport={{ once: true }} className="flex items-center gap-5">
-            {[
-              {
-                href: 'https://github.com/DevMathw',
-                label: t.footer.social.github,
-                Icon: Github,
-              },
-              {
-                href: 'https://www.linkedin.com/in/mateo-garcia-rodriguez-933135207/',
-                label: t.footer.social.linkedin,
-                Icon: Linkedin,
-              },
-              {
-                href: 'mailto:mateogarcia13.mg@gmail.com',
-                label: t.footer.social.email,
-                Icon: Mail,
-              },
-            ].map(({ href, label, Icon }) => (
-              <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="group">
-                <span className=" flex items-center justify-center w-10 h-10 rounded-full  border border-gray-300 dark:border-white/30 text-gray-600 dark:text-gray-300 transition-all duration-300 group-hover:border-green700 dark:group-hover:border-green400 group-hover:text-green700 dark:group-hover:text-green400 group-hover:-translate-y-1">
-                  <Icon size={18} />
-                </span>
-              </a>
-            ))}
-          </motion.div>
-        </div>
+    <footer>
+      <div className="footer-inner">
+        <span className="footer-logo">mat<span style={{ color: "var(--text-accent)" }}>.</span>dev</span>
+        <span className="footer-copy">{t.copy}</span>
+        <nav className="footer-links" aria-label="Social links">
+          {t.links.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              target={link.href.startsWith("mailto") ? undefined : "_blank"}
+              rel="noopener noreferrer"
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
       </div>
     </footer>
-  )
+  );
 }
-
-export default Footer
 
 

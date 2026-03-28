@@ -1,51 +1,86 @@
-import { Outfit, Ovo, Monda } from "next/font/google"
-import "./globals.css"
+import { DM_Sans, DM_Mono } from "next/font/google";
+import "./globals.css";
 
-const outfit = Outfit({
+// ── Fuentes ──────────────────────────────────────────────────
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-})
+  weight: ["300", "400", "500"],
+  variable: "--font-dm-sans",
+  display: "swap",
+});
 
-const ovo = Ovo({
+const dmMono = DM_Mono({
   subsets: ["latin"],
-  weight: ["400"],
-})
+  weight: ["400", "500"],
+  variable: "--font-dm-mono",
+  display: "swap",
+});
 
-const monda = Monda({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-})
-
+// ── Metadata ─────────────────────────────────────────────────
 export const metadata = {
-  title: "mat.dev | Fullstack Developer",
-  description: "Portfolio of Mat — Fullstack Developer focused on modern web applications.",
+  title: "Mateo Garcia — Full-stack Developer",
+  description:
+    "Full-stack developer with 3 years of experience building reliable, scalable web applications. PHP, JavaScript, React, Node.js.",
+  keywords: ["full-stack developer", "web developer", "PHP", "JavaScript", "React", "Node.js"],
+  authors: [{ name: "Mateo Garcia" }],
   openGraph: {
-    title: "mat.dev | Fullstack Developer",
-    description: "React, Next.js, Node.js, PHP, Python",
-    images: ["/og.png"],
+    title: "Mateo Garcia — Full-stack Developer",
+    description:
+      "Full-stack developer focused on building reliable and scalable web applications.",
+    url: "https://portfolio-nine-henna-77.vercel.app",
+    siteName: "mat.dev",
+    locale: "en_US",
+    type: "website",
   },
-  other: {
-    google: "notranslate",
+  twitter: {
+    card: "summary_large_image",
+    title: "Mateo Garcia — Full-stack Developer",
+    description: "Full-stack developer focused on building reliable and scalable web apps.",
   },
-  alternates:
-  {
-    en: '/',
-    es: '/?lang=es'
-  }
-}
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
-import {LanguageProvider} from '@/components/context/LanguageContext';
+// ── Script anti-flash de tema (inline, antes del render) ─────
+// Lee la preferencia guardada en localStorage y aplica el
+// data-theme ANTES de que el browser pinte la página.
+// Esto evita el flash blanco en usuarios que prefieren dark.
+const themeScript = `
+  (function() {
+    try {
+      var saved = localStorage.getItem('mat-dev-theme');
+      var preferred = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      var theme = saved || preferred;
+      document.documentElement.setAttribute('data-theme', theme);
+    } catch(e) {}
+  })();
+`;
 
+// ── Root Layout ───────────────────────────────────────────────
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" translate="no" className="scroll-smooth">
-      <body className={`${outfit.className} ${ovo.className} ${monda.className} antialiased leading-8 overflow-x-hidden dark:bg-darkTheme dark:text-white `}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${dmSans.variable} ${dmMono.variable}`}
+    >
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+        {/* Anti-flash de tema: se ejecuta de forma síncrona antes del paint */}
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body>
+        {/* Skip link para accesibilidad con teclado */}
+        <a href="#main-content" className="skip-link">
+          Skip to main content
+        </a>
         <main id="main-content">
-          <LanguageProvider >
-            {children}
-          </LanguageProvider>
+          {children}
         </main>
       </body>
     </html>
-  )
+  );
 }

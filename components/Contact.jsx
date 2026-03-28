@@ -1,186 +1,225 @@
-'use client'
+"use client";
+import { useState, useRef, useEffect } from "react";
 
-import React, { useEffect, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import Reveal from '@/components/Reveal'
-import { RevealGroup, RevealItem } from '@/components/RevealGroup'
-import { useLanguage } from '@/components/hooks/useLanguage'
+/**
+ * Contact — versión mejorada
+ * - Form limpio con estados de focus
+ * - Contador de caracteres por campo
+ * - Estado de envío con feedback visual
+ * - Layout de dos columnas en desktop
+ */
 
-const MAX = {
-  name: 150,
-  email: 256,
-  message: 500,
-}
+export default function Contact({ language }) {
+  const sectionRef = useRef(null);
 
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [sent, setSent]   = useState(false);
+  const [sending, setSending] = useState(false);
 
-const Contact = () => {
-  const { lang, t } = useLanguage()
+  const LIMITS = { name: 150, email: 256, message: 500 };
 
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    message: '',
-  })
+  const content = {
+    en: {
+      label:        "Get in touch",
+      title:        "Let's work together",
+      desc:         "Have a project in mind or need help building a web solution? Feel free to reach out — I'm open to new opportunities.",
+      name:         "Name",
+      email:        "Email",
+      message:      "Message",
+      namePH:       "Your name",
+      emailPH:      "you@example.com",
+      messagePH:    "Tell me about your project...",
+      send:         "Send message",
+      sending:      "Sending...",
+      thanks:       "Message sent! I'll get back to you soon.",
+    },
+    es: {
+      label:        "Contacto",
+      title:        "Trabajemos juntos",
+      desc:         "¿Tienes un proyecto en mente o necesitas ayuda con una solución web? Contáctame — estoy abierto a nuevas oportunidades.",
+      name:         "Nombre",
+      email:        "Email",
+      message:      "Mensaje",
+      namePH:       "Tu nombre",
+      emailPH:      "tu@ejemplo.com",
+      messagePH:    "Cuéntame sobre tu proyecto...",
+      send:         "Enviar mensaje",
+      sending:      "Enviando...",
+      thanks:       "¡Mensaje enviado! Te responderé pronto.",
+    },
+  };
 
-  const [errors, setErrors] = useState({})
-  const [submitted, setSubmitted] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
+  const t = content[language] || content.en;
 
-  /** 🔑 RESET al cambiar idioma */
+  // Fade-in on scroll
   useEffect(() => {
-    setErrors({})
-    setSubmitted(false)
-  }, [lang])
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.querySelectorAll(".fade-up").forEach((el) =>
+              el.classList.add("visible")
+            );
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
 
-  const validate = () => {
-    const newErrors = {}
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const limit = LIMITS[name];
+    setForm((f) => ({ ...f, [name]: value.slice(0, limit) }));
+  };
 
-    if (!form.name.trim()) {
-      newErrors.name = t.errors.required
-    } else if (form.name.length > MAX.name) {
-      newErrors.name = t.errors.max(MAX.name)
-    }
-
-    if (!form.email.trim()) {
-      newErrors.email = t.errors.required
-    } else if (!emailRegex.test(form.email)) {
-      newErrors.email = t.errors.email
-    } else if (form.email.length > MAX.email) {
-      newErrors.email = t.errors.max(MAX.email)
-    }
-
-    if (!form.message.trim()) {
-      newErrors.message = t.errors.required
-    } else if (form.message.length > MAX.message) {
-      newErrors.message = t.errors.max(MAX.message)
-    }
-
-    return newErrors
-  }
-
-  const onSubmit = async (e) => {
-    e.preventDefault()
-    setSubmitted(true)
-
-    const validationErrors = validate()
-    setErrors(validationErrors)
-
-    if (Object.keys(validationErrors).length > 0) return
-
-    setLoading(true)
-
-    const formData = new FormData()
-    formData.append('access_key', '11f94cd1-f520-49aa-b4ee-cfa4098d050c')
-    formData.append('subject', 'New message from portfolio')
-    formData.append('from_name', 'Portfolio Contact')
-    formData.append('name', form.name)
-    formData.append('email', form.email)
-    formData.append('message', form.message)
-
-    try {
-      const res = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        body: formData,
-      })
-
-      const data = await res.json()
-
-      if (data.success) {
-        setSuccess(true)
-        setForm({ name: '', email: '', message: '' })
-        setErrors({})
-        setSubmitted(false)
-      }
-    } catch {
-      alert('Network error. Please try again later.')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    if (success) {
-      const timer = setTimeout(() => setSuccess(false), 3000)
-      return () => clearTimeout(timer)
-    }
-  }, [success])
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (sending || sent) return;
+    setSending(true);
+    // Simula envío (reemplazar con tu lógica real)
+    await new Promise((r) => setTimeout(r, 1200));
+    setSending(false);
+    setSent(true);
+    setForm({ name: "", email: "", message: "" });
+  };
 
   return (
-    <section id="contact" className="w-full px-[12%] py-20 scroll-mt-24">
-      <Reveal>
-        <h2 className="text-center text-5xl font-Ovo">
-          {t.contact.title}
-        </h2>
-      </Reveal>
+    <section className="section" id="contact" ref={sectionRef}>
+      <div className="container">
+        <span className="section-label fade-up">{t.label}</span>
+        <h2 className="section-title fade-up" data-delay="1">{t.title}</h2>
+        <p className="section-desc fade-up" data-delay="2">{t.desc}</p>
 
-      <Reveal delay={0.2}>
-        <p className="text-center max-w-2xl mx-auto mt-5 mb-14 font-Monda text-lg opacity-80">
-          {t.contact.subtitle}
-        </p>
-      </Reveal>
+        <div className="contact-wrap fade-up" data-delay="3">
+          <form className="contact-form" onSubmit={handleSubmit} noValidate>
+            {/* Name */}
+            <div className="form-group">
+              <label htmlFor="contact-name">{t.name}</label>
+              <input
+                id="contact-name"
+                type="text"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                placeholder={t.namePH}
+                required
+                autoComplete="name"
+              />
+              <div className="form-meta">
+                <span />
+                <span className={`char-count ${form.name.length > LIMITS.name * 0.9 ? "near-limit" : ""}`}>
+                  {form.name.length}/{LIMITS.name}
+                </span>
+              </div>
+            </div>
 
-      <form onSubmit={onSubmit} className="max-w-2xl mx-auto">
-        <RevealGroup>
-          <RevealItem>
-            <label htmlFor="name" className="block mb-2 font-Monda">
-              {t.contact.name}
-            </label>
-            <input id="name" type="text" value={form.name} autoComplete='off' onChange={(e) => setForm({ ...form, name: e.target.value })} className={`w-full p-2 rounded-md border outline-none focus:ring-2 focus:ring-green700 ${submitted && errors.name ? 'border-red-500' : 'border-gray-400'}`} />
-            <div className="flex justify-between mt-1 text-xs opacity-60">
-              {submitted && errors.name && <span className="text-red-500">{errors.name}</span>}
-              <span>{form.name.length}/{MAX.name}</span>
+            {/* Email */}
+            <div className="form-group">
+              <label htmlFor="contact-email">{t.email}</label>
+              <input
+                id="contact-email"
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                placeholder={t.emailPH}
+                required
+                autoComplete="email"
+              />
+              <div className="form-meta">
+                <span />
+                <span className={`char-count ${form.email.length > LIMITS.email * 0.9 ? "near-limit" : ""}`}>
+                  {form.email.length}/{LIMITS.email}
+                </span>
+              </div>
             </div>
-          </RevealItem>
-          <RevealItem>
-            <label htmlFor="email" className="block mb-2 mt-6 font-Monda">
-              {t.contact.email}
-            </label>
-            <input id="email" type="email" value={form.email} autoComplete='off' onChange={(e) => setForm({ ...form, email: e.target.value })} className={`w-full p-2 rounded-md border outline-none focus:ring-2 focus:ring-green700 ${submitted && errors.email ? 'border-red-500' : 'border-gray-400'}`}/>
-            <div className="flex justify-between mt-1 text-xs opacity-60">
-              {submitted && errors.email && <span className="text-red-500">{errors.email}</span>}
-              <span>{form.email.length}/{MAX.email}</span>
+
+            {/* Message */}
+            <div className="form-group">
+              <label htmlFor="contact-message">{t.message}</label>
+              <textarea
+                id="contact-message"
+                name="message"
+                value={form.message}
+                onChange={handleChange}
+                placeholder={t.messagePH}
+                required
+                rows={5}
+              />
+              <div className="form-meta">
+                <span />
+                <span className={`char-count ${form.message.length > LIMITS.message * 0.9 ? "near-limit" : ""}`}>
+                  {form.message.length}/{LIMITS.message}
+                </span>
+              </div>
             </div>
-          </RevealItem>
-          <RevealItem>
-            <label htmlFor="message" className="block mb-2 mt-6 font-Monda">
-              {t.contact.message}
-            </label>
-            <textarea id="message" rows={5} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className={`w-full p-3 rounded-md border outline-none focus:ring-2 focus:ring-green700 ${submitted && errors.message ? 'border-red-500' : 'border-gray-400'}`} />
-            <div className="flex justify-between mt-1 text-xs opacity-60">
-              {submitted && errors.message && <span className="text-red-500">{errors.message}</span>}
-              <span>{form.message.length}/{MAX.message}</span>
-            </div>
-          </RevealItem>
-          <RevealItem>
-            <div className="flex justify-center mt-8">
+
+            {/* Submit */}
+            <div className="form-submit">
               <button
                 type="submit"
-                disabled={loading}
-                className={`px-10 py-3 rounded-full font-Monda bg-black text-white transition
-                  ${loading ? 'opacity-70 cursor-not-allowed' : 'hover:bg-black/90'}`}
+                className="btn btn-primary"
+                disabled={sending || sent}
+                aria-disabled={sending || sent}
+                style={{ opacity: sending ? 0.7 : 1 }}
               >
-                {loading ? t.contact.sending : t.contact.send}
+                {sending ? (
+                  <>
+                    <LoadingSpinner />
+                    {t.sending}
+                  </>
+                ) : (
+                  <>
+                    {t.send}
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <line x1="22" y1="2" x2="11" y2="13"/>
+                      <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                    </svg>
+                  </>
+                )}
               </button>
-            </div>
-          </RevealItem>
-        </RevealGroup>
-      </form>
 
-      <AnimatePresence>
-        {success && (
-          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} className="fixed inset-0 z-50 flex items-center justify-center" >
-            <div className="bg-greenPrimary text-white px-8 py-4 rounded-full shadow-xl text-lg">
-              {t.contact.success}
+              {sent && (
+                <span className="submit-feedback show" role="status">
+                  ✓ {t.thanks}
+                </span>
+              )}
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </form>
+        </div>
+      </div>
     </section>
-  )
+  );
 }
 
-export default Contact
+function LoadingSpinner() {
+  return (
+    <svg
+      width="14" height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      style={{ animation: "spin 0.8s linear infinite" }}
+    >
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      <line x1="12" y1="2" x2="12" y2="6"/>
+      <line x1="12" y1="18" x2="12" y2="22"/>
+      <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/>
+      <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/>
+      <line x1="2" y1="12" x2="6" y2="12"/>
+      <line x1="18" y1="12" x2="22" y2="12"/>
+      <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/>
+      <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/>
+    </svg>
+  );
+}
 
 

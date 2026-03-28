@@ -1,63 +1,175 @@
-'use client'
+"use client";
+import { useEffect, useRef } from "react";
 
-import { workData } from '@/assets/assets'
-import React from 'react'
-import { motion } from 'framer-motion'
-import { useLanguage } from '@/components/hooks/useLanguage'
-import texts from '@/components/language/texts'
+/**
+ * Work — versión mejorada
+ * - Cards con hover sutil y microinteracciones
+ * - Ícono por proyecto
+ * - Tags de tecnología
+ * - CTA a GitHub
+ * - Grid 2 columnas en desktop
+ */
 
-const Work = () => {
-  const { lang } = useLanguage()
-  const t = texts[lang].work
+const PROJECTS = [
+  {
+    icon: "◈",
+    name: { en: "Personal Portfolio Website",    es: "Portfolio Personal" },
+    desc: { en: "Modern portfolio built with Next.js, animations, and responsive design.", es: "Portfolio moderno con Next.js, animaciones y diseño responsivo." },
+    tags: ["Next.js", "Tailwind", "Vercel"],
+    live: "https://your-site.com",
+    code: "https://github.com/DevMathw/portfolio",
+  },
+  {
+    icon: "◎",
+    name: { en: "Geo-Based Web Application",    es: "Aplicación Web Geo-Localizada" },
+    desc: { en: "Location-based application focused on map interaction and geolocation.", es: "Aplicación basada en localización con interacción de mapas y geolocalización." },
+    tags: ["PHP", "CodeIgniter", "MySQL", "Leaflet"],
+    live: "https://your-site.com",
+    code: "https://github.com/you/project",
+  },
+  {
+    icon: "◐",
+    name: { en: "Photography Showcase Website", es: "Sitio de Fotografía" },
+    desc: { en: "Visual-focused website designed to highlight photography and galleries.", es: "Sitio web visual centrado en fotografía y galerías de imágenes." },
+    tags: ["JavaScript", "CSS Grid", "Lightbox"],
+    live: "https://your-site.com",
+    code: "https://github.com/you/project",
+  },
+  {
+    icon: "◇",
+    name: { en: "UI/UX Design Concept",         es: "Concepto UI/UX" },
+    desc: { en: "UI/UX design project focused on usability, layout, and accessibility.", es: "Proyecto de diseño UI/UX enfocado en usabilidad, layout y accesibilidad." },
+    tags: ["Figma", "Prototyping", "Design Systems"],
+    live: "https://your-site.com",
+    code: "https://github.com/you/project",
+  },
+];
+
+export default function Work({ language }) {
+  const sectionRef = useRef(null);
+
+  const content = {
+    en: {
+      label:   "Selected Work",
+      title:   "Projects",
+      desc:    "A selection of real-world projects where I designed, built, and delivered full-stack solutions.",
+      live:    "Live",
+      code:    "Code",
+      github:  "View more on GitHub →",
+    },
+    es: {
+      label:   "Trabajo seleccionado",
+      title:   "Proyectos",
+      desc:    "Una selección de proyectos reales donde diseñé, construí y entregué soluciones full-stack.",
+      live:    "Ver en vivo",
+      code:    "Código",
+      github:  "Ver más en GitHub →",
+    },
+  };
+
+  const t = content[language] || content.en;
+
+  // Fade-in on scroll
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.querySelectorAll(".fade-up").forEach((el, i) => {
+              setTimeout(() => el.classList.add("visible"), i * 80);
+            });
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section id="work" className="w-full px-[12%] py-20 scroll-mt-24">
-      <motion.h2 initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center text-5xl font-Ovo mb-6">
-        {t.title}
-      </motion.h2>
+    <section className="section" id="work" ref={sectionRef}>
+      <div className="container">
+        <span className="section-label fade-up">{t.label}</span>
+        <h2 className="section-title fade-up" data-delay="1">{t.title}</h2>
+        <p className="section-desc fade-up" data-delay="2">{t.desc}</p>
 
-      <motion.p initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1, duration: 0.6 }} className="text-center max-w-2xl mx-auto mb-14 font-Monda text-gray-600 dark:text-gray-300">
-        {t.description}
-      </motion.p>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {workData.map((project, index) => (
-          <motion.article key={index} initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.08 }} whileHover={{ y: -6 }} className="group relative rounded-2xl overflow-hidden bg-gray-100 dark:bg-darkHover shadow-md hover:shadow-xl transition-shadow">
-            <div className="h-56 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"style={{ backgroundImage: `url(${project.bgImage})`,willChange: 'transform',}}/>
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition duration-500" />
-            <div className="absolute bottom-0 w-full p-6 translate-y-10 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-              <h3 className="text-white text-xl font-semibold mb-1">
-                {project.title}
-              </h3>
-              <p className="text-white/80 text-sm mb-4">
-                {project.description}
-              </p>
-              <div className="flex gap-3">
-                {project.demo && (
-                  <a href={project.demo} target="_blank" rel="noopener noreferrer" className="px-4 py-2 text-sm rounded-full bg-white text-black font-medium hover:bg-green700 hover:text-white transition">
+        <div className="projects-grid">
+          {PROJECTS.map((project, i) => (
+            <article
+              key={i}
+              className="project-card fade-up"
+              data-delay={i % 2 === 0 ? "1" : "2"}
+            >
+              {/* Header */}
+              <div className="project-card-header">
+                <div className="project-icon" aria-hidden="true">
+                  {project.icon}
+                </div>
+                <div className="project-links">
+                  <a
+                    href={project.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="project-link"
+                    aria-label={`${project.name[language]} – live site`}
+                  >
                     {t.live}
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                      <polyline points="15 3 21 3 21 9"/>
+                      <line x1="10" y1="14" x2="21" y2="3"/>
+                    </svg>
                   </a>
-                )}
-
-                {project.github && (
-                  <a href={project.github} target="_blank" rel="noopener noreferrer" className="px-4 py-2 text-sm rounded-full border border-white text-white hover:bg-white hover:text-black transition">
+                  <a
+                    href={project.code}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="project-link"
+                    aria-label={`${project.name[language]} – source code`}
+                  >
                     {t.code}
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <polyline points="16 18 22 12 16 6"/>
+                      <polyline points="8 6 2 12 8 18"/>
+                    </svg>
                   </a>
-                )}
+                </div>
               </div>
-            </div>
-          </motion.article>
-        ))}
-      </div>
-      <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.2 }} className="flex justify-center mt-20">
-        <a href="https://github.com/DevMathw" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-10 py-3 rounded-full border border-gray-400 text-gray-700 dark:text-white dark:border-white hover:bg-green700 hover:text-white hover:border-green700 dark:hover:bg-green400 dark:hover:text-black transition">
-          {t.more}
-        </a>
-      </motion.div>
-    </section>
-  )
-}
 
-export default Work
+              {/* Body */}
+              <div>
+                <h3 className="project-name">{project.name[language]}</h3>
+                <p className="project-desc">{project.desc[language]}</p>
+              </div>
+
+              {/* Footer */}
+              <div className="project-footer">
+                <div className="project-tags">
+                  {project.tags.map((tag) => (
+                    <span key={tag} className="project-tag">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className="projects-cta fade-up">
+          <a
+            href="https://github.com/DevMathw"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-ghost"
+          >
+            {t.github}
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 

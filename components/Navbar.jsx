@@ -1,77 +1,176 @@
-'use client'
+"use client";
+import { useState, useEffect } from "react";
+// Hook reutilizable — coloca en hooks/useActiveSection.js
+// import { useActiveSection } from "@/hooks/useActiveSection";
+// Por compatibilidad, se incluye inline aquí también:
+function useActiveSection(ids = []) {
+  const [active, setActive] = useState(ids[0] || "");
+  useEffect(() => {
+    if (!ids.length) return;
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); }),
+      { threshold: 0.4, rootMargin: "-20% 0px -60% 0px" }
+    );
+    ids.forEach((id) => { const el = document.getElementById(id); if (el) obs.observe(el); });
+    return () => obs.disconnect();
+  }, [ids.join(",")]);
+  return active;
+}
 
-import { assets } from '@/assets/assets'
-import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
-import { FiHome, FiUser, FiBriefcase, FiMail } from 'react-icons/fi'
-import MobileNav from '@/components/MobileNav'
-import LanguageSwitcher from '@/components/hooks/LanguageSwitcher'
-import { useLanguage } from '@/components/hooks/useLanguage'
-import texts from '@/components/language/texts'
+/**
+ * Navbar — versión mejorada v2
+ * - useActiveSection con IntersectionObserver (más preciso que scroll manual)
+ * - Bloquea scroll del body cuando menú mobile está abierto
+ * - aria-current para accesibilidad
+ * - Íconos SVG inline sin dependencias
+ */
 
-const Navbar = ({ isDarkMode, setIsDarkMode }) => {
-  const { lang } = useLanguage()
-  const t = texts[lang]
+const SECTION_IDS = ["home", "about", "work", "contact"];
 
-  const [isScroll, setIsScroll] = useState(false)
-  const [activeSection, setActiveSection] = useState('top')
-
-  const sections = [
-    { id: 'top', label: t.nav.home, icon: FiHome },
-    { id: 'about', label: t.nav.about, icon: FiUser },
-    { id: 'work', label: t.nav.work, icon: FiBriefcase },
-    { id: 'contact', label: t.nav.contact, icon: FiMail },
-  ]
-
-  const scrollToSection = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-  }
+export default function Navbar({ language, toggleLanguage, theme, toggleTheme }) {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const activeSection = useActiveSection(SECTION_IDS);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScroll(window.scrollY > 50)
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-      sections.forEach(({ id }) => {
-        const section = document.getElementById(id)
-        if (!section) return
-        const rect = section.getBoundingClientRect()
-        if (rect.top <= 120 && rect.bottom >= 120) {
-          setActiveSection(id)
-        }
-      })
-    }
+  // Cierra el menú si click fuera
+  useEffect(() => {
+    if (!menuOpen) return;
+    const close = (e) => {
+      if (!e.target.closest("nav") && !e.target.closest(".mobile-menu")) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("click", close);
+    return () => document.removeEventListener("click", close);
+  }, [menuOpen]);
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [sections])
+  // Bloquea scroll del body cuando menú está abierto
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
+  const labels = {
+    en: { home: "Home", about: "About", work: "Work", contact: "Contact" },
+    es: { home: "Inicio", about: "Sobre mí", work: "Proyectos", contact: "Contacto" },
+  };
+  const t = labels[language] || labels.en;
+
+  const navLinks = [
+    { id: "home",    label: t.home },
+    { id: "about",   label: t.about },
+    { id: "work",    label: t.work },
+    { id: "contact", label: t.contact },
+  ];
+
+  const scrollTo = (id) => {
+    setMenuOpen(false);
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <>
-      <nav className={`fixed top-0 w-full px-5 lg:px-8 xl:px-[8%] py-4 flex items-center justify-between z-50 transition ${isScroll ? 'bg-white/70 backdrop-blur shadow dark:bg-darkTheme/70' : ''}`}>
-        <div onClick={() => scrollToSection('top')} className="cursor-pointer font-bold text-xl tracking-wide hover:scale-105 transition" >
-          matt<span className="text-green700 dark:text-green400">.dev</span>
-        </div>
-        <ul className="hidden md:flex items-center gap-8">
-          {sections.map(({ id, label }) => (
-            <li key={id} onClick={() => scrollToSection(id)} className={`cursor-pointer font-Monda transition${activeSection === id ? 'menu-active' : 'hover:text-green700 hover:dark:text-green400'}`}>
-              {label}
-            </li>
-          ))}
-        </ul>
-        <div className="flex items-center gap-4">
-          <LanguageSwitcher />
-          <button onClick={() => setIsDarkMode((p) => !p)} aria-label="Toggle theme">
-            <Image src={isDarkMode ? assets.sun_icon : assets.moon_icon} alt="theme" className="w-6 transition-transform hover:rotate-180"/>
-          </button>
+      <nav
+        style={{
+          borderBottomColor: scrolled
+            ? "rgba(255,255,255,0.08)"
+            : "rgba(255,255,255,0.04)",
+        }}
+      >
+        <div className="navbar-inner">
+          {/* Logo */}
+          <a href="#home" className="nav-logo" onClick={(e) => { e.preventDefault(); scrollTo("home"); }}>
+            mat<span>.</span>dev
+          </a>
+
+          {/* Links desktop */}
+          <ul className="nav-links" role="list">
+            {navLinks.map((link) => (
+              <li key={link.id}>
+                <a
+                  href={`#${link.id}`}
+                  className={activeSection === link.id ? "active" : ""}
+                  onClick={(e) => { e.preventDefault(); scrollTo(link.id); }}
+                  aria-current={activeSection === link.id ? "page" : undefined}
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          {/* Controles */}
+          <div className="nav-right">
+            {/* Toggle idioma */}
+            <button
+              className="lang-btn"
+              onClick={toggleLanguage}
+              aria-label="Toggle language"
+            >
+              {language === "en" ? "ES" : "EN"}
+            </button>
+
+            {/* Toggle tema */}
+            <button
+              className="theme-btn"
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+            >
+              {theme === "dark" ? (
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="5"/>
+                  <line x1="12" y1="1" x2="12" y2="3"/>
+                  <line x1="12" y1="21" x2="12" y2="23"/>
+                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                  <line x1="1" y1="12" x2="3" y2="12"/>
+                  <line x1="21" y1="12" x2="23" y2="12"/>
+                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                </svg>
+              ) : (
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+              )}
+            </button>
+
+            {/* Hamburger mobile */}
+            <button
+              className="hamburger"
+              aria-label="Toggle menu"
+              onClick={(e) => { e.stopPropagation(); setMenuOpen((o) => !o); }}
+            >
+              <span style={{ transform: menuOpen ? "rotate(45deg) translate(4px, 4px)" : "none" }} />
+              <span style={{ opacity: menuOpen ? 0 : 1, transform: menuOpen ? "scaleX(0)" : "none" }} />
+              <span style={{ transform: menuOpen ? "rotate(-45deg) translate(4px, -4px)" : "none" }} />
+            </button>
+          </div>
         </div>
       </nav>
-      <MobileNav sections={sections} activeSection={activeSection} onNavigate={scrollToSection}
-      />
-    </>
-  )
-}
 
-export default Navbar
+      {/* Mobile menu */}
+      <div className={`mobile-menu ${menuOpen ? "open" : ""}`} onClick={(e) => e.stopPropagation()}>
+        {navLinks.map((link) => (
+          <a
+            key={link.id}
+            href={`#${link.id}`}
+            onClick={(e) => { e.preventDefault(); scrollTo(link.id); }}
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+    </>
+  );
+}
 
 
 

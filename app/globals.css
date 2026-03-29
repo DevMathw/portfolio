@@ -608,11 +608,20 @@ nav {
   border-radius: var(--radius-sm);
   background: var(--bg-base);
   transition: all var(--duration) var(--ease-out);
+  cursor: pointer;
+  text-decoration: none;
+  z-index: 2;
 }
 .project-link:hover {
   color: var(--text-primary);
   border-color: var(--border-default);
   background: var(--bg-elevated);
+}
+
+.project-link--disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .project-name {
@@ -742,6 +751,44 @@ nav {
   transition: opacity var(--duration);
 }
 .submit-feedback.show { opacity: 1; }
+
+/* Error inline por campo */
+.field-error {
+  font-size: 0.75rem;
+  color: var(--danger);
+  line-height: 1.4;
+}
+
+/* Toast de éxito — overlay centrado (reemplaza framer-motion del original) */
+.toast-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  animation: toast-in 0.25s var(--ease-out) forwards;
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.toast-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--success);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: var(--radius-full);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
 
 /* ── Footer ────────────────────────────────────────────────── */
 footer {
@@ -1051,4 +1098,3 @@ select:focus-visible {
   border: none;
   margin: 0;
 }
-

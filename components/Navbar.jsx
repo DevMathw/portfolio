@@ -1,19 +1,47 @@
 "use client";
 import { useState, useEffect } from "react";
-// Hook reutilizable — coloca en hooks/useActiveSection.js
-// import { useActiveSection } from "@/hooks/useActiveSection";
-// Por compatibilidad, se incluye inline aquí también:
-function useActiveSection(ids = []) {
+
+// Hook inline — misma lógica que hooks/useActiveSection.js
+// Detecta la sección activa comparando scrollY con el offsetTop de cada sección.
+// Más fiable que IntersectionObserver para secciones de altura variable.
+function useActiveSection(ids = [], navHeight = 56) {
   const [active, setActive] = useState(ids[0] || "");
+
   useEffect(() => {
     if (!ids.length) return;
-    const obs = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); }),
-      { threshold: 0.4, rootMargin: "-20% 0px -60% 0px" }
-    );
-    ids.forEach((id) => { const el = document.getElementById(id); if (el) obs.observe(el); });
-    return () => obs.disconnect();
-  }, [ids.join(",")]);
+
+    const getActive = () => {
+      const scrollY = window.scrollY;
+      const offset  = navHeight + 80; // umbral: nav + pequeño margen anticipado
+      let current   = ids[0];
+
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.offsetTop - offset <= scrollY) {
+          current = id;
+        }
+      }
+      return current;
+    };
+
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setActive(getActive());
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    // Estado inicial (carga directa en sección específica o reload)
+    setActive(getActive());
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [ids.join(","), navHeight]);
+
   return active;
 }
 

@@ -16,7 +16,7 @@ const PROJECTS = [
     name: { en: "Personal Portfolio Website",    es: "Portfolio Personal" },
     desc: { en: "Modern portfolio built with Next.js, animations, and responsive design.", es: "Portfolio moderno con Next.js, animaciones y diseño responsivo." },
     tags: ["Next.js", "Tailwind", "Vercel"],
-    live: "https://your-site.com",
+    live: "https://portfolio-nine-henna-77.vercel.app",
     code: "https://github.com/DevMathw/portfolio",
   },
   {
@@ -24,24 +24,24 @@ const PROJECTS = [
     name: { en: "Geo-Based Web Application",    es: "Aplicación Web Geo-Localizada" },
     desc: { en: "Location-based application focused on map interaction and geolocation.", es: "Aplicación basada en localización con interacción de mapas y geolocalización." },
     tags: ["PHP", "CodeIgniter", "MySQL", "Leaflet"],
-    live: "https://your-site.com",
-    code: "https://github.com/you/project",
+    live: null,
+    code: null,
   },
   {
     icon: "◐",
     name: { en: "Photography Showcase Website", es: "Sitio de Fotografía" },
     desc: { en: "Visual-focused website designed to highlight photography and galleries.", es: "Sitio web visual centrado en fotografía y galerías de imágenes." },
     tags: ["JavaScript", "CSS Grid", "Lightbox"],
-    live: "https://your-site.com",
-    code: "https://github.com/you/project",
+    live: null,
+    code: null,
   },
   {
     icon: "◇",
     name: { en: "UI/UX Design Concept",         es: "Concepto UI/UX" },
     desc: { en: "UI/UX design project focused on usability, layout, and accessibility.", es: "Proyecto de diseño UI/UX enfocado en usabilidad, layout y accesibilidad." },
     tags: ["Figma", "Prototyping", "Design Systems"],
-    live: "https://your-site.com",
-    code: "https://github.com/you/project",
+    live: null,
+    code: null,
   },
 ];
 
@@ -109,33 +109,53 @@ export default function Work({ language }) {
                   {project.icon}
                 </div>
                 <div className="project-links">
-                  <a
-                    href={project.live}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="project-link"
-                    aria-label={`${project.name[language]} – live site`}
-                  >
-                    {t.live}
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                      <polyline points="15 3 21 3 21 9"/>
-                      <line x1="10" y1="14" x2="21" y2="3"/>
-                    </svg>
-                  </a>
-                  <a
-                    href={project.code}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="project-link"
-                    aria-label={`${project.name[language]} – source code`}
-                  >
-                    {t.code}
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <polyline points="16 18 22 12 16 6"/>
-                      <polyline points="8 6 2 12 8 18"/>
-                    </svg>
-                  </a>
+                  {project.live ? (
+                    <a
+                      href={project.live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="project-link"
+                      aria-label={`${project.name[language]} – live site`}
+                    >
+                      {t.live}
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                        <polyline points="15 3 21 3 21 9"/>
+                        <line x1="10" y1="14" x2="21" y2="3"/>
+                      </svg>
+                    </a>
+                  ) : (
+                    <span
+                      className="project-link project-link--disabled"
+                      aria-disabled="true"
+                      title="Coming soon"
+                    >
+                      {t.live}
+                    </span>
+                  )}
+                  {project.code ? (
+                    <a
+                      href={project.code}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="project-link"
+                      aria-label={`${project.name[language]} – source code`}
+                    >
+                      {t.code}
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <polyline points="16 18 22 12 16 6"/>
+                        <polyline points="8 6 2 12 8 18"/>
+                      </svg>
+                    </a>
+                  ) : (
+                    <span
+                      className="project-link project-link--disabled"
+                      aria-disabled="true"
+                      title="Coming soon"
+                    >
+                      {t.code}
+                    </span>
+                  )}
                 </div>
               </div>
 

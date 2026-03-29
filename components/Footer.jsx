@@ -34,7 +34,7 @@ export default function Footer({ language }) {
       <div className="footer-inner">
         <span className="footer-logo">mat<span style={{ color: "var(--text-accent)" }}>.</span>dev</span>
         <span className="footer-copy">{t.copy}</span>
-        <nav className="footer-links" aria-label="Social links">
+        <div className="footer-links" aria-label="Social links">
           {t.links.map((link) => (
             <a
               key={link.label}
@@ -45,7 +45,7 @@ export default function Footer({ language }) {
               {link.label}
             </a>
           ))}
-        </nav>
+        </div>
       </div>
     </footer>
   );

@@ -1,50 +1,69 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useRef } from "react";
 
 /**
  * useActiveSection
  *
- * Observa las secciones del DOM y devuelve el id de la sección
- * actualmente visible. Mucho más preciso que calcular scroll
- * manualmente, y sin pérdida de rendimiento porque usa
- * IntersectionObserver en lugar de un listener de scroll.
+ * Detecta qué sección está activa usando un scroll listener
+ * con getBoundingClientRect(). Funciona correctamente con
+ * secciones de cualquier altura sin importar la velocidad del scroll.
  *
- * Uso:
- *   const active = useActiveSection(["home", "about", "work", "contact"]);
+ * Lógica: la sección activa es la que tenga su borde superior
+ * más cercano al offset del navbar (56px) sin haberlo sobrepasado
+ * hacia arriba todavía — es decir, la última sección cuyo top
+ * ya cruzó el umbral del navbar.
  *
- * @param {string[]} sectionIds  - IDs de las secciones a observar
- * @param {number}   threshold   - Porcentaje de visibilidad requerido (0-1)
- * @param {string}   rootMargin  - Margen del viewport para el observer
- * @returns {string}             - ID de la sección activa
+ * @param {string[]} sectionIds - IDs de las secciones a observar
+ * @param {number}   navHeight  - Altura del navbar fijo en px (default 56)
  */
-export function useActiveSection(
-  sectionIds = [],
-  threshold = 0.4,
-  rootMargin = "-20% 0px -60% 0px"
-) {
+export function useActiveSection(sectionIds = [], navHeight = 56) {
   const [active, setActive] = useState(sectionIds[0] || "");
 
   useEffect(() => {
     if (!sectionIds.length) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActive(entry.target.id);
-          }
+    const getActive = () => {
+      // Recorre las secciones de abajo hacia arriba y devuelve
+      // la primera cuyo top ya pasó el umbral del navbar
+      const scrollY = window.scrollY;
+
+      // Pequeño offset extra para que el cambio ocurra un poco
+      // antes de llegar al borde exacto de la sección
+      const offset = navHeight + 80;
+
+      let current = sectionIds[0];
+
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        if (el.offsetTop - offset <= scrollY) {
+          current = id;
+        }
+      }
+
+      return current;
+    };
+
+    // Throttle manual sin librerías: solo procesa 1 vez cada 16ms (~60fps)
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setActive(getActive());
+          ticking = false;
         });
-      },
-      { threshold, rootMargin }
-    );
+        ticking = true;
+      }
+    };
 
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
+    // Calcular el estado inicial (por si la página carga en medio de un scroll)
+    setActive(getActive());
 
-    return () => observer.disconnect();
-  }, [sectionIds.join(","), threshold, rootMargin]);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+
+  }, [sectionIds.join(","), navHeight]);
 
   return active;
 }

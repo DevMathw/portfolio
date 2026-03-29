@@ -13,35 +13,31 @@ import { useEffect, useRef } from "react";
 const PROJECTS = [
   {
     icon: "◈",
-    name: { en: "Personal Portfolio Website",    es: "Portfolio Personal" },
-    desc: { en: "Modern portfolio built with Next.js, animations, and responsive design.", es: "Portfolio moderno con Next.js, animaciones y diseño responsivo." },
-    tags: ["Next.js", "Tailwind", "Vercel"],
+    name: {
+      en: "Personal Portfolio Website",
+      es: "Portfolio Personal",
+    },
+    desc: {
+      en: "Developer portfolio built with Next.js and Tailwind CSS. Features dark/light mode, bilingual support (EN/ES), smooth scroll navigation, animated skill bars, and a contact form via Web3Forms.",
+      es: "Portfolio de desarrollador construido con Next.js y Tailwind CSS. Incluye modo oscuro/claro, soporte bilingüe (EN/ES), navegación con scroll suave, barras de habilidades animadas y formulario de contacto vía Web3Forms.",
+    },
+    tags: ["Next.js", "Tailwind CSS", "Vercel", "Web3Forms"],
     live: "https://portfolio-nine-henna-77.vercel.app",
     code: "https://github.com/DevMathw/portfolio",
   },
   {
     icon: "◎",
-    name: { en: "Geo-Based Web Application",    es: "Aplicación Web Geo-Localizada" },
-    desc: { en: "Location-based application focused on map interaction and geolocation.", es: "Aplicación basada en localización con interacción de mapas y geolocalización." },
-    tags: ["PHP", "CodeIgniter", "MySQL", "Leaflet"],
-    live: null,
-    code: null,
-  },
-  {
-    icon: "◐",
-    name: { en: "Photography Showcase Website", es: "Sitio de Fotografía" },
-    desc: { en: "Visual-focused website designed to highlight photography and galleries.", es: "Sitio web visual centrado en fotografía y galerías de imágenes." },
-    tags: ["JavaScript", "CSS Grid", "Lightbox"],
-    live: null,
-    code: null,
-  },
-  {
-    icon: "◇",
-    name: { en: "UI/UX Design Concept",         es: "Concepto UI/UX" },
-    desc: { en: "UI/UX design project focused on usability, layout, and accessibility.", es: "Proyecto de diseño UI/UX enfocado en usabilidad, layout y accesibilidad." },
-    tags: ["Figma", "Prototyping", "Design Systems"],
-    live: null,
-    code: null,
+    name: {
+      en: "Personal Finance App",
+      es: "App de Finanzas Personales",
+    },
+    desc: {
+      en: "Full-stack finance application with a JavaScript frontend and a REST API backend. Allows users to track income, expenses, and financial summaries with a clean, responsive interface.",
+      es: "Aplicación de finanzas full-stack con frontend en JavaScript y backend REST API. Permite registrar ingresos, gastos y ver resúmenes financieros con una interfaz limpia y responsiva.",
+    },
+    tags: ["JavaScript", "CSS", "Node.js", "REST API"],
+    live: "https://finance-app-pi-three.vercel.app/login",
+    code: "https://github.com/DevMathw/finance-app",
   },
 ];
 

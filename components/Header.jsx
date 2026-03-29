@@ -92,7 +92,7 @@ export default function Header({ language, theme }) {
         {/* Right: image */}
         <div className="hero-image-wrap fade-up" data-delay="2">
           <Image
-            src={theme === "dark" ? "/logo-light.png" : "/main-logo.png"}
+            src="/main-logo.png"
             alt="Mateo Garcia – Fullstack Developer"
             width={380}
             height={460}

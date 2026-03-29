@@ -18,7 +18,7 @@ const dmMono = DM_Mono({
 
 // ── Metadata ─────────────────────────────────────────────────
 export const metadata = {
-  title: "Mateo Garcia — Full-stack Developer",
+  title: "mat.dev — Full-stack Developer",
   description:
     "Full-stack developer with 3 years of experience building reliable, scalable web applications. PHP, JavaScript, React, Node.js.",
   keywords: ["full-stack developer", "web developer", "PHP", "JavaScript", "React", "Node.js"],

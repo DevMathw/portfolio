@@ -321,13 +321,17 @@ nav {
   display: none;
   flex-direction: column;
   gap: 5px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-default);
+  background: transparent;
+  color: var(--text-secondary);
   cursor: pointer;
-  padding: 4px;
+  padding: 9px 7px;
 }
 .hamburger span {
   display: block;
-  width: 20px;
-  height: 1.5px;
+  width: 15px;
+  height: 1.2px;
   background: var(--text-secondary);
   border-radius: 2px;
   transition: all var(--duration) var(--ease-out);

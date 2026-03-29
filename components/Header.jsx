@@ -11,7 +11,7 @@ import Image from "next/image";
  * - Texto subrayado de tecnologías como decoración sutil
  */
 
-export default function Header({ language, theme }) {
+export default function Header({ language }) {
   const titleRef = useRef(null);
 
   const content = {
@@ -75,7 +75,7 @@ export default function Header({ language, theme }) {
               </svg>
             </button>
             <a
-              href="/cv_mat_en.pdf"
+              href={language === "en" ? "cv_mat_en.pdf" : "cv_mat_es.pdf"}
               download
               className="btn btn-ghost"
             >

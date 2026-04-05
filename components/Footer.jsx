@@ -12,8 +12,8 @@ export default function Footer({ language }) {
       copy: `© ${new Date().getFullYear()}. All rights reserved.`,
       links: [
         { label: "GitHub",   href: "https://github.com/DevMathw" },
-        { label: "LinkedIn", href: "https://linkedin.com" },
-        { label: "Email",    href: "mailto:hello@mat.dev" },
+        { label: "LinkedIn", href: "https://www.linkedin.com/in/mateo-garcia-rodriguez-933135207/" },
+        { label: "Email",    href: "mailto:dev.mathew.coded@gmail.com" },
       ],
     },
     es: {
@@ -21,8 +21,8 @@ export default function Footer({ language }) {
       copy: `© ${new Date().getFullYear()}. Todos los derechos reservados.`,
       links: [
         { label: "GitHub",   href: "https://github.com/DevMathw" },
-        { label: "LinkedIn", href: "https://linkedin.com" },
-        { label: "Email",    href: "mailto:hello@mat.dev" },
+        { label: "LinkedIn", href: "https://www.linkedin.com/in/mateo-garcia-rodriguez-933135207/" },
+        { label: "Email",    href: "mailto:dev.mathew.coded@gmail.com" },
       ],
     },
   };

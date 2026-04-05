@@ -42,14 +42,14 @@ const PROJECTS = [
   {
     icon: "◎",
     name: {
-      en: "AI UX Auditor",
-      es: "Auditor UX con IA",
+      en: "UX Auditor",
+      es: "Auditor UX",
     },
     desc: {
-      en: "AI-powered UX analysis tool built with Next.js and Claude AI. Analyzes any website's visual hierarchy, accessibility, and UX clarity, returning a scored report with structured problems and improvement suggestions.",
-      es: "Herramienta de análisis UX con IA construida con Next.js y Claude AI. Analiza jerarquía visual, accesibilidad y claridad UX de cualquier sitio web, generando un reporte con puntaje, problemas detectados y sugerencias de mejora.",
+      en: "AI-powered UX analysis tool built with Next.js and AI. Analyzes any website's visual hierarchy, accessibility, and UX clarity, returning a scored report with structured problems and improvement suggestions.",
+      es: "Herramienta de análisis UX con IA construida con Next.js y IA. Analiza jerarquía visual, accesibilidad y claridad UX de cualquier sitio web, generando un reporte con puntaje, problemas detectados y sugerencias de mejora.",
     },
-    tags: ["Next.js", "TypeScript", "Tailwind CSS", "Claude AI"],
+    tags: ["Next.js", "TypeScript", "Tailwind CSS", "AI"],
     live: "https://ux-auditor-chi.vercel.app/",
     code: "https://github.com/DevMathw/ux-auditor",
   },

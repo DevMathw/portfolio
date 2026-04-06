@@ -26,7 +26,7 @@ const PROJECTS = [
     code: "https://github.com/DevMathw/portfolio",
   },
   {
-    icon: "◎",
+    icon: "◐",
     name: {
       en: "Personal Finance App",
       es: "App de Finanzas Personales",
@@ -52,6 +52,20 @@ const PROJECTS = [
     tags: ["Next.js", "TypeScript", "Tailwind CSS", "AI"],
     live: "https://ux-auditor-chi.vercel.app/",
     code: "https://github.com/DevMathw/ux-auditor",
+  },
+  {
+    icon: "◇",
+    name: {
+      en: "To-Do App — REST API",
+      es: "App de Tareas — REST API",
+    },
+    desc: {
+      en: "Full-stack task manager with a FastAPI backend and a JavaScript frontend. Features JWT authentication, per-user data isolation, full CRUD, and auto-generated API docs via Swagger.",
+      es: "Gestor de tareas full-stack con backend FastAPI y frontend en JavaScript. Incluye autenticación JWT, aislamiento de datos por usuario, CRUD completo y documentación automática de la API con Swagger.",
+    },
+    tags: ["FastAPI", "Python", "SQLite", "JWT", "JavaScript"],
+    live: "https://to-do-app-seven-wine-10.vercel.app/",
+    code: "https://github.com/DevMathw/to-do-app",
   },
 ];
 

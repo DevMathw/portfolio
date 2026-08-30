@@ -1,66 +1,80 @@
 "use client";
-import { useState, useEffect } from "react";
-import Navbar   from "@/components/Navbar";
-import Header     from "@/components/Header";
-import About    from "@/components/About";
-import Work     from "@/components/Work";
-import Contact  from "@/components/Contact";
-import Footer   from "@/components/Footer";
+import { useEffect, useCallback } from "react";
+import Navbar from "@/components/Navbar";
+import Header from "@/components/Header";
+import About from "@/components/About";
+import Service from "@/components/Services";
+import Work from "@/components/Work";
+import Contact from "@/components/Contact";
+import Footer from "@/components/Footer";
+import { useHtmlPreference } from "@/components/hooks/useHtmlPreference";
+import { DEFAULT_LANGUAGE, LANGUAGES } from "@/components/language/texts";
 
 /**
- * page.js — versión mejorada
- * - Observer global para .fade-up
- * - Estado de idioma y tema en la raíz
- * - Persistencia de tema en localStorage
- * - Respeta prefers-color-scheme del SO
+ * page.js
+ * - Tema e idioma viven como atributos del <html> (data-theme / lang), que
+ *   el script inline de layout.js ya aplica antes del primer paint.
+ *   useHtmlPreference los lee sin duplicar estado ni provocar parpadeos.
+ * - Un único IntersectionObserver para todas las animaciones .fade-up.
  */
 
+const THEMES = ["dark", "light"];
+
 export default function Home() {
-  // ── Tema ────────────────────────────────────────────────────
-  const [theme, setTheme] = useState("dark"); // SSR-safe default
+  const [theme, setTheme] = useHtmlPreference({
+    attribute: "data-theme",
+    storageKey: "mat-dev-theme",
+    values: THEMES,
+    serverValue: "dark",
+  });
 
+  const [language, setLanguage] = useHtmlPreference({
+    attribute: "lang",
+    storageKey: "mat-dev-lang",
+    values: LANGUAGES,
+    serverValue: DEFAULT_LANGUAGE,
+  });
+
+  const toggleTheme = useCallback(
+    () => setTheme(theme === "dark" ? "light" : "dark"),
+    [theme, setTheme]
+  );
+
+  const toggleLanguage = useCallback(
+    () => setLanguage(language === "en" ? "es" : "en"),
+    [language, setLanguage]
+  );
+
+  // ── Observer único de fade-up ────────────────────────────────
+  // Antes había cuatro observers (uno global y uno por sección) haciendo
+  // exactamente el mismo trabajo sobre los mismos elementos.
   useEffect(() => {
-    // Leer tema inicial (ya aplicado en el HTML por el script anti-flash del layout)
-    const saved    = localStorage.getItem("mat-dev-theme");
-    const preferred = window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
-    const initial = saved || preferred;
-    setTheme(initial);
-    document.documentElement.setAttribute("data-theme", initial);
-  }, []);
+    // Si el usuario prefiere menos movimiento, el CSS ya deja todo visible.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-  const toggleTheme = () => {
-    const next = theme === "dark" ? "light" : "dark";
-    setTheme(next);
-    document.documentElement.setAttribute("data-theme", next);
-    try { localStorage.setItem("mat-dev-theme", next); } catch (_) {}
-  };
-
-  // ── Idioma ───────────────────────────────────────────────────
-  const [language, setLanguage] = useState("en");
-  const toggleLanguage = () => setLanguage((l) => (l === "en" ? "es" : "en"));
-
-  // ── Observer global de fade-up ───────────────────────────────
-  useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-            // Una vez visible, dejar de observar (optimización)
-            observer.unobserve(entry.target);
-          }
-        });
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add("visible");
+          // Las barras de skills comparten el mismo disparador. Se observa
+          // el contenedor (.skill-item) y no la barra: .skill-fill nace con
+          // width:0 y un elemento sin área es un objetivo poco fiable.
+          entry.target
+            .querySelectorAll(".skill-fill")
+            .forEach((bar) => bar.classList.add("animate"));
+          observer.unobserve(entry.target);
+        }
       },
       { threshold: 0.08, rootMargin: "0px 0px -32px 0px" }
     );
 
-    const targets = document.querySelectorAll(".fade-up");
-    targets.forEach((el) => observer.observe(el));
+    document
+      .querySelectorAll(".fade-up:not(.visible), .skill-item")
+      .forEach((el) => observer.observe(el));
 
     return () => observer.disconnect();
-  }, [language]); // re-observa cuando cambia idioma (DOM se actualiza)
+  }, []);
 
   return (
     <>
@@ -70,11 +84,12 @@ export default function Home() {
         theme={theme}
         toggleTheme={toggleTheme}
       />
-      <Header    language={language} />
-      <About   language={language} />
-      <Work    language={language} />
+      <Header language={language} />
+      <About language={language} />
+      <Service language={language} />
+      <Work language={language} />
       <Contact language={language} />
-      <Footer  language={language} />
+      <Footer language={language} />
     </>
   );
 }

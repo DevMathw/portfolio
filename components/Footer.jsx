@@ -1,54 +1,44 @@
+import { getTexts } from "@/components/language/texts";
+
 /**
- * Footer — versión mejorada
- * - Layout limpio con tres columnas
- * - Bio corta + copyright + links
- * - Monospace para el logo
+ * Footer
+ * - Logo monospace + copyright + enlaces sociales
+ *
+ * Los enlaces son idénticos en ambos idiomas, así que viven aquí como
+ * datos en lugar de duplicarse en el diccionario de textos.
  */
 
-export default function Footer({ language }) {
-  const content = {
-    en: {
-      bio:  "Full-stack developer · Clean, scalable, accessible web.",
-      copy: `© ${new Date().getFullYear()}. All rights reserved.`,
-      links: [
-        { label: "GitHub",   href: "https://github.com/DevMathw" },
-        { label: "LinkedIn", href: "https://www.linkedin.com/in/mateo-garcia-rodriguez-933135207/" },
-        { label: "Email",    href: "mailto:dev.mathew.coded@gmail.com" },
-      ],
-    },
-    es: {
-      bio:  "Desarrollador full-stack · Web limpia, escalable y accesible.",
-      copy: `© ${new Date().getFullYear()}. Todos los derechos reservados.`,
-      links: [
-        { label: "GitHub",   href: "https://github.com/DevMathw" },
-        { label: "LinkedIn", href: "https://www.linkedin.com/in/mateo-garcia-rodriguez-933135207/" },
-        { label: "Email",    href: "mailto:dev.mathew.coded@gmail.com" },
-      ],
-    },
-  };
+const SOCIAL_LINKS = [
+  { label: "GitHub", href: "https://github.com/DevMathw" },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/mateo-garcia-rodriguez-933135207/",
+  },
+  { label: "Email", href: "mailto:dev.mathew.coded@gmail.com" },
+];
 
-  const t = content[language] || content.en;
+export default function Footer({ language }) {
+  const t = getTexts(language).footer;
+  const year = new Date().getFullYear();
 
   return (
     <footer>
       <div className="footer-inner">
-        <span className="footer-logo">mat<span style={{ color: "var(--text-accent)" }}>.</span>dev</span>
-        <span className="footer-copy">{t.copy}</span>
-        <div className="footer-links" aria-label="Social links">
-          {t.links.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              target={link.href.startsWith("mailto") ? undefined : "_blank"}
-              rel="noopener noreferrer"
-            >
-              {link.label}
-            </a>
-          ))}
+        <span className="footer-logo">
+          mat<span style={{ color: "var(--text-accent)" }}>.</span>dev
+        </span>
+        <span className="footer-copy">{t.copy(year)}</span>
+        <div className="footer-links" aria-label={t.socialLabel}>
+          {SOCIAL_LINKS.map((link) => {
+            const isMail = link.href.startsWith("mailto:");
+            return (
+              <a key={link.label} href={link.href} target={isMail ? undefined : "_blank"} rel={isMail ? undefined : "noopener noreferrer"}>
+                {link.label}
+              </a>
+            );
+          })}
         </div>
       </div>
     </footer>
   );
 }
-
-

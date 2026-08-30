@@ -74,6 +74,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 56px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -138,6 +139,7 @@ a:hover { color: var(--text-accent); }
 
 .section {
   padding: var(--space-3xl) 0;
+  scroll-margin-top: 56px;
 }
 
 /* ── Grain overlay sutil en el body ────────────────────────── */
@@ -230,6 +232,11 @@ nav {
   border-bottom: 1px solid var(--border-subtle);
   transition: border-color var(--duration) var(--ease-out),
               background var(--duration) var(--ease-out);
+}
+
+/* Al hacer scroll el borde se refuerza ligeramente */
+nav.is-scrolled {
+  border-bottom-color: var(--border-default);
 }
 
 .navbar-inner {
@@ -411,6 +418,7 @@ nav {
 
 .hero-image-wrap img {
   width: 100%;
+  height: auto;
   border-radius: var(--radius-lg);
   display: block;
   position: relative;
@@ -434,6 +442,12 @@ nav {
   color: var(--text-tertiary);
   margin-bottom: var(--space-lg);
 }
+/* Variante de bloque: sustituye los style inline que había en About.jsx */
+.section-label--block {
+  display: flex;
+  margin-bottom: var(--space-md);
+}
+
 .section-label::before {
   content: '';
   display: inline-block;
@@ -475,8 +489,6 @@ nav {
   flex-direction: column;
   gap: var(--space-md);
 }
-
-.skill-item {}
 
 .skill-header {
   display: flex;
@@ -543,6 +555,12 @@ nav {
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--space-md);
 }
 
@@ -717,6 +735,11 @@ nav {
   border-color: var(--border-strong);
 }
 
+.form-group input.has-error,
+.form-group textarea.has-error {
+  border-color: var(--danger);
+}
+
 .form-group input:focus,
 .form-group textarea:focus {
   border-color: var(--accent);
@@ -763,7 +786,35 @@ nav {
   line-height: 1.4;
 }
 
-/* Toast de éxito — overlay centrado (reemplaza framer-motion del original) */
+/* Error global de envío (fallo de red o rechazo de la API) */
+.form-error {
+  font-size: 0.875rem;
+  color: var(--danger);
+  background: rgba(248,113,113,0.08);
+  border: 1px solid rgba(248,113,113,0.25);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  line-height: 1.5;
+}
+
+/* Spinner del botón de envío */
+.spinner {
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Región aria-live permanente que aloja el toast.
+   No usa display:contents a propósito: algunos motores sacan del árbol de
+   accesibilidad los elementos con ese display, que es justo lo que esta
+   región necesita conservar. Vacía no ocupa alto, y el toast que contiene
+   es position:fixed, así que no afecta al layout. */
+.toast-region {
+  display: block;
+}
+
+/* Toast de éxito — overlay centrado */
 .toast-overlay {
   position: fixed;
   inset: 0;
@@ -864,7 +915,8 @@ footer {
   z-index: 99;
 }
 
-.mobile-menu.open { display: block; }
+/* .open solo tiene efecto en mobile — ver media query de 768px */
+.mobile-menu.open { display: none; }
 
 .mobile-menu a {
   display: block;
@@ -886,6 +938,7 @@ footer {
 
   .nav-links { display: none; }
   .hamburger { display: flex; }
+  .mobile-menu.open { display: block; }
 
   .hero-inner {
     grid-template-columns: 1fr;
@@ -902,6 +955,10 @@ footer {
   }
 
   .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .services-grid {
     grid-template-columns: 1fr;
   }
 
@@ -977,6 +1034,10 @@ footer {
   Desactiva animaciones decorativas pero mantiene transiciones funcionales (focus, estados).
 */
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   .fade-up {
     opacity: 1;
     transform: none;
@@ -989,6 +1050,10 @@ footer {
   }
 
   .status-dot {
+    animation: none;
+  }
+
+  .toast-overlay {
     animation: none;
   }
 
@@ -1018,6 +1083,10 @@ footer {
 
   .projects-grid {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr 1fr 1fr;
   }
 
   .project-card {

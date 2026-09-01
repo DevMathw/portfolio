@@ -185,22 +185,13 @@ export default function Contact({ language }) {
           <div className="contact-wrap fade-up" data-delay="3">
             <form className="contact-form" onSubmit={onSubmit} noValidate>
               {/* Honeypot: invisible para personas, tentador para bots */}
-              <input
-                type="checkbox"
-                name="botcheck"
-                className="sr-only"
-                tabIndex={-1}
-                autoComplete="off"
-                aria-hidden="true"
+              <input type="checkbox" name="botcheck" className="sr-only" tabIndex={-1} autoComplete="off" aria-hidden="true"
               />
 
               {/* ── Name ── */}
               <div className="form-group">
                 <label htmlFor="contact-name">{t.name}</label>
-                <input
-                  type="text"
-                  placeholder={t.namePH}
-                  autoComplete="name"
+                <input type="text" placeholder={t.namePH} autoComplete="name"
                   {...fieldProps("name")}
                 />
                 {renderMeta("name")}
@@ -209,10 +200,7 @@ export default function Contact({ language }) {
               {/* ── Email ── */}
               <div className="form-group">
                 <label htmlFor="contact-email">{t.email}</label>
-                <input
-                  type="email"
-                  placeholder={t.emailPH}
-                  autoComplete="email"
+                <input type="email" placeholder={t.emailPH} autoComplete="email"
                   {...fieldProps("email")}
                 />
                 {renderMeta("email")}
@@ -234,12 +222,7 @@ export default function Contact({ language }) {
 
               {/* ── Submit ── */}
               <div className="form-submit">
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={loading}
-                  aria-busy={loading}
-                >
+                <button type="submit" className="btn btn-primary" disabled={loading}aria-busy={loading}>
                   {loading ? (
                     <>
                       <LoadingSpinner />

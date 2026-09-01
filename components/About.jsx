@@ -20,7 +20,7 @@ const SKILLS_PRIMARY = [
 
 const SKILLS_TAGS = [
   "React", "Node.js", "Python", "Django",
-  "APIs REST", "Git / GitHub", "UX / UI", "IA",
+  "APIs REST", "Git / GitHub", "UX / UI", "AI",
 ];
 
 export default function About({ language }) {
@@ -57,14 +57,7 @@ export default function About({ language }) {
                     <span className="skill-name">{skill.name}</span>
                     <span className="skill-pct">{skill.pct}%</span>
                   </div>
-                  <div
-                    className="skill-track"
-                    role="meter"
-                    aria-label={skill.name}
-                    aria-valuenow={skill.pct}
-                    aria-valuemin={0}
-                    aria-valuemax={100}
-                  >
+                  <div className="skill-track" role="meter" aria-label={skill.name} aria-valuenow={skill.pct} aria-valuemin={0}aria-valuemax={100}>
                     <div className="skill-fill" style={{ "--w": `${skill.pct}%` }} />
                   </div>
                 </div>

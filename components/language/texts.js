@@ -44,10 +44,6 @@ const texts = {
       label: "What I Offer",
       title: "Services",
       desc: "Custom software solutions to build, improve, and scale digital products, from development to deployment.",
-      live: "Live",
-      code: "Code",
-      github: "View more on GitHub →",
-      comingSoon: "Coming soon",
     },
     work: {
       label: "Selected Work",
@@ -58,7 +54,6 @@ const texts = {
       github: "View more on GitHub →",
       comingSoon: "Coming soon",
     },
-
     contact: {
       label: "Get in touch",
       title: "Let's work together",
@@ -80,7 +75,6 @@ const texts = {
         max: (n) => `Maximum ${n} characters allowed.`,
       },
     },
-
     footer: {
       copy: (year) => `© ${year}. All rights reserved.`,
       socialLabel: "Social links",
@@ -100,7 +94,6 @@ const texts = {
       openMenu: "Abrir menú",
       closeMenu: "Cerrar menú",
     },
-
     header: {
       status: "Disponible para nuevos proyectos",
       greeting: "Hola, soy",
@@ -110,7 +103,6 @@ const texts = {
       cta2: "Descargar CV",
       imageAlt: "Mateo Garcia – Desarrollador Full-stack",
     },
-
     about: {
       label: "Sobre mí",
       bio: "Soy desarrollador full-stack con 3 años de experiencia construyendo aplicaciones web reales. Trabajo en frontend y backend, creando interfaces limpias, APIs confiables y soluciones escalables que resuelven problemas reales de negocio.",
@@ -121,10 +113,6 @@ const texts = {
       label: "Lo que ofrezco",
       title: "Servicios",
       desc: "Soluciones de software a medida para crear, mejorar y escalar productos digitales, desde el desarrollo hasta la implementación.",
-      live: "Ver en vivo",
-      code: "Código",
-      github: "Ver más en GitHub →",
-      comingSoon: "Próximamente",
     },
     work: {
       label: "Trabajo seleccionado",
@@ -135,7 +123,6 @@ const texts = {
       github: "Ver más en GitHub →",
       comingSoon: "Próximamente",
     },
-
     contact: {
       label: "Contacto",
       title: "Trabajemos juntos",
@@ -157,7 +144,6 @@ const texts = {
         max: (n) => `Máximo ${n} caracteres permitidos.`,
       },
     },
-
     footer: {
       copy: (year) => `© ${year}. Todos los derechos reservados.`,
       socialLabel: "Enlaces sociales",

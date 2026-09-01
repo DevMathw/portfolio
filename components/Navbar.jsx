@@ -12,7 +12,7 @@ import { getTexts } from "@/components/language/texts";
  * - aria-current / aria-expanded para accesibilidad
  */
 
-const SECTION_IDS = ["home", "about", "work", "contact"];
+const SECTION_IDS = ["home", "about", "service", "work", "contact"];
 const NAV_HEIGHT = 56;
 const MOBILE_BREAKPOINT = 768;
 

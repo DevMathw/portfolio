@@ -53,20 +53,20 @@ const PROJECTS = [
     live: "https://ux-auditor-chi.vercel.app/",
     code: "https://github.com/DevMathw/ux-auditor",
   },
-  // {
-  //   icon: "◇",
-  //   name: {
-  //     en: "To-Do App — REST API",
-  //     es: "App de Tareas — REST API",
-  //   },
-  //   desc: {
-  //     en: "Full-stack task manager with a FastAPI backend and a JavaScript frontend. Features JWT authentication, per-user data isolation, full CRUD, and auto-generated API docs via Swagger.",
-  //     es: "Gestor de tareas full-stack con backend FastAPI y frontend en JavaScript. Incluye autenticación JWT, aislamiento de datos por usuario, CRUD completo y documentación automática de la API con Swagger.",
-  //   },
-  //   tags: ["FastAPI", "Python", "SQLite", "JWT", "JavaScript"],
-  //   live: "https://to-do-app-seven-wine-10.vercel.app/",
-  //   code: "https://github.com/DevMathw/to-do-app",
-  // },
+  {
+    icon: "◇",
+    name: {
+      en: "To-Do App",
+      es: "App Gestor de Tareas",
+    },
+    desc: {
+      en: "Full-stack task manager with a FastAPI backend and a JavaScript frontend. Features JWT authentication, per-user data isolation, full CRUD, and auto-generated API docs via Swagger.",
+      es: "Gestor de tareas full-stack con backend FastAPI y frontend en JavaScript. Incluye autenticación JWT, aislamiento de datos por usuario, CRUD completo y documentación automática de la API con Swagger.",
+    },
+    tags: ["FastAPI", "Python", "SQLite", "JWT", "JavaScript"],
+    live: "https://to-do-app-seven-wine-10.vercel.app/",
+    code: "https://github.com/DevMathw/to-do-app",
+  },
 ];
 
 export default function Work({ language }) {
@@ -90,11 +90,7 @@ export default function Work({ language }) {
             const projectDesc = project.desc[language] ?? project.desc.en;
 
             return (
-              <article
-                key={project.code ?? project.name.en}
-                className="project-card fade-up"
-                data-delay={i % 2 === 0 ? "1" : "2"}
-              >
+              <article key={project.code ?? project.name.en} className="project-card fade-up" data-delay={i % 2 === 0 ? "1" : "2"}>
                 {/* Header */}
                 <div className="project-card-header">
                   <div className="project-icon" aria-hidden="true">
@@ -102,69 +98,29 @@ export default function Work({ language }) {
                   </div>
                   <div className="project-links">
                     {project.live ? (
-                      <a
-                        href={project.live}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="project-link"
-                        aria-label={`${projectName} – live site`}
-                      >
+                      <a href={project.live} target="_blank" rel="noopener noreferrer" className="project-link"aria-label={`${projectName} – live site`}>
                         {t.live}
-                        <svg
-                          width="10"
-                          height="10"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          aria-hidden="true"
-                        >
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                           <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                           <polyline points="15 3 21 3 21 9" />
                           <line x1="10" y1="14" x2="21" y2="3" />
                         </svg>
                       </a>
                     ) : (
-                      <span
-                        className="project-link project-link--disabled"
-                        aria-disabled="true"
-                        title={t.comingSoon}
-                      >
+                      <span className="project-link project-link--disabled" aria-disabled="true" title={t.comingSoon}>
                         {t.live}
                       </span>
                     )}
                     {project.code ? (
-                      <a
-                        href={project.code}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="project-link"
-                        aria-label={`${projectName} – source code`}
-                      >
+                      <a href={project.code} target="_blank" rel="noopener noreferrer" className="project-link" aria-label={`${projectName} – source code`}>
                         {t.code}
-                        <svg
-                          width="10"
-                          height="10"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          aria-hidden="true"
-                        >
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                           <polyline points="16 18 22 12 16 6" />
                           <polyline points="8 6 2 12 8 18" />
                         </svg>
                       </a>
                     ) : (
-                      <span
-                        className="project-link project-link--disabled"
-                        aria-disabled="true"
-                        title={t.comingSoon}
-                      >
+                      <span className="project-link project-link--disabled" aria-disabled="true"title={t.comingSoon}>
                         {t.code}
                       </span>
                     )}
@@ -193,12 +149,7 @@ export default function Work({ language }) {
         </div>
 
         <div className="projects-cta fade-up d-none">
-          <a
-            href="https://github.com/DevMathw"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-ghost"
-          >
+          <a href="https://github.com/DevMathw" target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
             {t.github}
           </a>
         </div>

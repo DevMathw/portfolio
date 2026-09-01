@@ -2,10 +2,9 @@
 import { getTexts } from "@/components/language/texts";
 
 /**
- * Work — proyectos destacados
+ * Service — Servicios que ofrezco
  * - Cards con hover sutil y microinteracciones
- * - Ícono, tags de tecnología y enlaces por proyecto
- * - Grid de 2 columnas en desktop
+ * - Grid de 3 columnas en desktop
  *
  * Las animaciones on-scroll las gestiona el observer único de page.js.
  */
@@ -114,14 +113,9 @@ export default function Work({ language }) {
             const projectDesc = service.desc[language] ?? service.desc.en;
 
             return (
-              <article
-                key={service.code ?? service.name.en}
-                className="project-card fade-up"
-                data-delay={i % 2 === 0 ? "1" : "2"}
-              >
+              <article key={service.code ?? service.name.en} className="project-card fade-up" data-delay={i % 2 === 0 ? "1" : "2"}>
                 {/* Header */}
-                <div className="project-card-header">
-                </div>
+                <div className="project-card-header"></div>
 
                 {/* Body */}
                 <div>

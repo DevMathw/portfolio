@@ -67,7 +67,7 @@ export default function Header({ language }) {
           {/* 512×512 son las dimensiones reales del archivo: declararlas
               correctamente evita distorsión y desplazamiento de layout (CLS). */}
           <Image
-            src="/main-logo.png"
+            src="/logoMain.png"
             alt={t.imageAlt}
             width={512}
             height={512}

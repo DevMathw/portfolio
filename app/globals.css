@@ -285,7 +285,7 @@ nav.is-scrolled {
 .nav-right {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: var(--space-sm);
 }
 
 .lang-btn {

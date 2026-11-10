@@ -1,5 +1,5 @@
 "use client";
-import { useSyncExternalStore } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 
 /**
  * useMediaQuery
@@ -15,11 +15,16 @@ import { useSyncExternalStore } from "react";
  * @param {boolean} serverValue  - valor durante SSR e hidratación
  */
 export function useMediaQuery(query, serverValue = false) {
-  const subscribe = (listener) => {
-    const mq = window.matchMedia(query);
-    mq.addEventListener("change", listener);
-    return () => mq.removeEventListener("change", listener);
-  };
+  // subscribe debe conservar su identidad entre renders: si cambia, React
+  // cancela y repite la suscripción. Solo cambia cuando cambia la query.
+  const subscribe = useCallback(
+    (listener) => {
+      const mq = window.matchMedia(query);
+      mq.addEventListener("change", listener);
+      return () => mq.removeEventListener("change", listener);
+    },
+    [query]
+  );
 
   return useSyncExternalStore(
     subscribe,

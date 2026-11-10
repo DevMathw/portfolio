@@ -2,7 +2,7 @@
 import { getTexts } from "@/components/language/texts";
 
 /**
- * Service — Servicios que ofrezco
+ * Services — Servicios que ofrezco
  * - Cards con hover sutil y microinteracciones
  * - Grid de 3 columnas en desktop
  *
@@ -42,7 +42,7 @@ const SERVICES = [
   },
   {
     name: {
-      en: "Backend y APIs",
+      en: "Backend & APIs",
       es: "Backend y APIs",
     },
     desc: {
@@ -92,7 +92,7 @@ const SERVICES = [
   },
 ];
 
-export default function Work({ language }) {
+export default function Services({ language }) {
   const t = getTexts(language).service;
 
   return (
@@ -113,18 +113,12 @@ export default function Work({ language }) {
             const projectDesc = service.desc[language] ?? service.desc.en;
 
             return (
-              <article key={service.code ?? service.name.en} className="project-card fade-up" data-delay={i % 2 === 0 ? "1" : "2"}>
-                {/* Header */}
-                <div className="project-card-header"></div>
-
+              <article key={service.name.en} className="project-card fade-up" data-delay={i % 2 === 0 ? "1" : "2"}>
                 {/* Body */}
                 <div>
                   <h3 className="project-name">{projectName}</h3>
                   <p className="project-desc">{projectDesc}</p>
                 </div>
-
-                {/* Footer */}
-                <div className="project-footer"></div>
               </article>
             );
           })}

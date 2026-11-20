@@ -1,8 +1,10 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 import { useActiveSection } from "@/components/hooks/useActiveSection";
 import { useMediaQuery } from "@/components/hooks/useMediaQuery";
 import { getTexts } from "@/components/language/texts";
+import { HAS_EXPERIENCE } from "@/components/Experience";
 
 /**
  * Navbar
@@ -12,11 +14,15 @@ import { getTexts } from "@/components/language/texts";
  * - aria-current / aria-expanded para accesibilidad
  */
 
-const SECTION_IDS = ["home", "about", "service", "work", "contact"];
+// La experiencia solo entra si Experience.jsx tiene datos reales: si no,
+// esa sección no se renderiza y el enlace no llevaría a ninguna parte.
+const SECTION_IDS = HAS_EXPERIENCE
+  ? ["home", "service", "work", "experience", "about", "contact"]
+  : ["home", "service", "work", "about", "contact"];
 const NAV_HEIGHT = 56;
 const MOBILE_BREAKPOINT = 768;
 
-export default function Navbar({ language, toggleLanguage, theme, toggleTheme }) {
+export default function Navbar({ language, theme, toggleTheme }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuRequested, setMenuRequested] = useState(false);
   const activeSection = useActiveSection(SECTION_IDS, NAV_HEIGHT);
@@ -29,6 +35,7 @@ export default function Navbar({ language, toggleLanguage, theme, toggleTheme })
   const menuOpen = menuRequested && isMobile;
 
   const t = getTexts(language).nav;
+  const other = language === "en" ? "es" : "en";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -45,7 +52,7 @@ export default function Navbar({ language, toggleLanguage, theme, toggleTheme })
       const target = e.target;
       // e.target puede no ser un Element (p. ej. un nodo de texto)
       if (!(target instanceof Element)) return;
-      if (!target.closest("nav") && !target.closest(".mobile-menu")) {
+      if (!target.closest(".site-nav") && !target.closest(".mobile-menu")) {
         setMenuRequested(false);
       }
     };
@@ -72,9 +79,10 @@ export default function Navbar({ language, toggleLanguage, theme, toggleTheme })
 
   const navLinks = [
     { id: "home", label: t.home },
-    { id: "about", label: t.about },
     { id: "service", label: t.service },
     { id: "work", label: t.work },
+    ...(HAS_EXPERIENCE ? [{ id: "experience", label: t.experience }] : []),
+    { id: "about", label: t.about },
     { id: "contact", label: t.contact },
   ];
 
@@ -85,7 +93,7 @@ export default function Navbar({ language, toggleLanguage, theme, toggleTheme })
 
   return (
     <>
-      <nav className={scrolled ? "is-scrolled" : ""} aria-label="Main">
+      <nav className={`site-nav${scrolled ? " is-scrolled" : ""}`} aria-label="Main">
         <div className="navbar-inner">
           {/* Logo */}
           <a
@@ -121,13 +129,17 @@ export default function Navbar({ language, toggleLanguage, theme, toggleTheme })
           {/* Controles */}
           <div className="nav-right">
             {/* Toggle idioma */}
-            <button
+            {/* Enlace y no botón: cambiar de idioma ES navegar. Así el
+                lector de pantalla lo anuncia como enlace, funciona abrir en
+                pestaña nueva, y Google puede rastrear la otra versión. */}
+            <Link
               className="lang-btn"
-              onClick={toggleLanguage}
+              href={`/${other}`}
+              hrefLang={other}
               aria-label={t.toggleLanguage}
             >
-              {language === "en" ? "ES" : "EN"}
-            </button>
+              <span lang={other}>{other.toUpperCase()}</span>
+            </Link>
 
             {/* Toggle tema */}
             <button

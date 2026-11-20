@@ -220,7 +220,7 @@ body::before {
 }
 
 /* ── Navbar ────────────────────────────────────────────────── */
-nav {
+.site-nav {
   position: fixed;
   top: 0;
   left: 0;
@@ -235,7 +235,7 @@ nav {
 }
 
 /* Al hacer scroll el borde se refuerza ligeramente */
-nav.is-scrolled {
+.site-nav.is-scrolled {
   border-bottom-color: var(--border-default);
 }
 
@@ -289,6 +289,10 @@ nav.is-scrolled {
 }
 
 .lang-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
   font-size: 0.8rem;
   font-family: var(--font-mono);
   padding: 4px 10px;
@@ -483,49 +487,6 @@ nav.is-scrolled {
   margin-bottom: var(--space-xl);
 }
 
-/* Skills */
-.skills-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-}
-
-.skill-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 6px;
-}
-
-.skill-name {
-  font-size: 0.875rem;
-  color: var(--text-primary);
-  font-weight: 500;
-}
-
-.skill-pct {
-  font-size: 0.75rem;
-  color: var(--text-tertiary);
-  font-family: var(--font-mono);
-}
-
-.skill-track {
-  height: 3px;
-  background: var(--bg-elevated);
-  border-radius: var(--radius-full);
-  overflow: hidden;
-}
-
-.skill-fill {
-  height: 100%;
-  border-radius: var(--radius-full);
-  background: linear-gradient(90deg, var(--accent) 0%, var(--text-accent) 100%);
-  width: 0;
-  transition: width 1.2s var(--ease-out);
-}
-
-.skill-fill.animate { width: var(--w); }
-
 /* Skill tags */
 .skill-tags {
   display: flex;
@@ -545,10 +506,41 @@ nav.is-scrolled {
   transition: all var(--duration) var(--ease-out);
   cursor: default;
 }
+.skill-tag--core {
+  color: var(--text-primary);
+  border-color: var(--border-default);
+  background: var(--bg-hover);
+}
+
 .skill-tag:hover {
   background: var(--bg-hover);
   color: var(--text-primary);
   border-color: var(--border-default);
+}
+
+/* Enlace al CV — discreto a propósito: es material secundario, no una
+   llamada a la acción que deba competir con "Iniciar un proyecto". */
+/* Contorno de acento, no relleno: se ve, pero no compite con el CTA
+   primario "Iniciar un proyecto", que es la acción que buscamos. */
+.cv-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+  padding: 8px 16px;
+  border: 1px solid rgba(124, 111, 247, 0.35);
+  border-radius: var(--radius-md);
+  background: var(--accent-subtle);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-accent);
+  text-decoration: none;
+  transition: all var(--duration) var(--ease-out);
+}
+.cv-link:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
 }
 
 /* ── Work / Projects ────────────────────────────────────────── */
@@ -594,6 +586,17 @@ nav.is-scrolled {
   box-shadow: var(--shadow-md);
 }
 .project-card:hover::before { opacity: 1; }
+
+/* A sangre: los márgenes negativos cancelan el padding de la tarjeta, que
+   ya tiene overflow:hidden para recortar las esquinas. */
+.project-thumb {
+  width: calc(100% + var(--space-lg) * 2);
+  height: auto;
+  margin: calc(var(--space-lg) * -1) calc(var(--space-lg) * -1) 0;
+  display: block;
+  border-bottom: 1px solid var(--border-subtle);
+  object-fit: cover;
+}
 
 .project-card-header {
   display: flex;
@@ -681,9 +684,146 @@ nav.is-scrolled {
   border: 1px solid var(--border-subtle);
 }
 
+/* ── Ofertas de servicio ───────────────────────────────────── */
+/* Hereda el chrome de .project-card; aqui solo el layout propio.
+   El precio va anclado al pie para que las tres tarjetas alineen
+   aunque las descripciones tengan distinto largo. */
+.service-card {
+  justify-content: flex-start;
+}
+
+.service-includes {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+}
+
+.service-includes li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Marca de verificacion dibujada en CSS: evita un SVG por item */
+.service-includes li::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 7px;
+  width: 7px;
+  height: 4px;
+  border-left: 1.5px solid var(--text-accent);
+  border-bottom: 1.5px solid var(--text-accent);
+  transform: rotate(-45deg);
+}
+
+.service-price {
+  margin-top: auto;
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border-subtle);
+}
+.service-price .badge {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  padding: 5px 12px;
+}
+
+.services-note {
+  margin-top: var(--space-lg);
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  max-width: 560px;
+}
+
 .projects-cta {
   text-align: center;
   margin-top: var(--space-xl);
+}
+
+/* ── Experiencia (línea de tiempo) ─────────────────────────── */
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+/* Raíl vertical que une los hitos */
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    var(--border-default) 0%,
+    var(--border-subtle) 85%,
+    transparent 100%
+  );
+}
+
+.timeline-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 11px 1fr;
+  gap: var(--space-lg);
+  padding-bottom: var(--space-xl);
+}
+.timeline-item:last-child { padding-bottom: 0; }
+
+.timeline-marker {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  margin-top: 6px;
+  background: var(--bg-base);
+  border: 2px solid var(--border-strong);
+  transition: border-color var(--duration) var(--ease-out);
+}
+.timeline-item:first-child .timeline-marker {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-subtle);
+}
+
+.timeline-period {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+  margin-bottom: 4px;
+}
+
+.timeline-role {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.timeline-company {
+  color: var(--text-accent);
+  font-weight: 400;
+}
+
+.timeline-summary {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: var(--space-md);
+}
+
+.timeline-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
 }
 
 /* ── Contact Section ───────────────────────────────────────── */
@@ -711,6 +851,7 @@ nav.is-scrolled {
 }
 
 .form-group input,
+.form-group select,
 .form-group textarea {
   background: var(--bg-surface);
   border: 1px solid var(--border-default);
@@ -723,6 +864,34 @@ nav.is-scrolled {
   width: 100%;
   outline: none;
   resize: vertical;
+}
+
+.form-group select {
+  appearance: none;
+  cursor: pointer;
+  /* Flecha dibujada en el fondo: evita depender del control nativo, que
+     cada navegador pinta a su manera y rompe el estilo oscuro. */
+  background-image: linear-gradient(45deg, transparent 50%, var(--text-tertiary) 50%),
+                    linear-gradient(135deg, var(--text-tertiary) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 38px;
+}
+.form-group select option {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+.form-optional {
+  color: var(--text-tertiary);
+  font-weight: 400;
 }
 
 .form-group input::placeholder,
@@ -845,6 +1014,23 @@ nav.is-scrolled {
   pointer-events: none;
 }
 
+/* Vía directa bajo el formulario */
+.contact-alt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-xs) var(--space-md);
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border-subtle);
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+.contact-reply {
+  color: var(--text-tertiary);
+}
+
 /* ── Footer ────────────────────────────────────────────────── */
 footer {
   border-top: 1px solid var(--border-subtle);
@@ -856,10 +1042,62 @@ footer {
   max-width: 1000px;
   margin: 0 auto;
   padding: 0 var(--space-lg);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+.footer-brand {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+
+.footer-pitch {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  max-width: 300px;
+}
+
+.footer-cta {
+  margin-top: var(--space-xs);
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.footer-col-title {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  font-weight: 400;
+}
+
+.footer-col a {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  transition: color var(--duration);
+}
+.footer-col a:hover { color: var(--text-primary); }
+
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: var(--space-md);
+  gap: var(--space-sm);
+  margin-top: var(--space-xl);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border-subtle);
 }
 
 .footer-logo {
@@ -872,17 +1110,6 @@ footer {
   font-size: 0.8125rem;
   color: var(--text-tertiary);
 }
-
-.footer-links {
-  display: flex;
-  gap: var(--space-md);
-}
-.footer-links a {
-  font-size: 0.8125rem;
-  color: var(--text-tertiary);
-  transition: color var(--duration);
-}
-.footer-links a:hover { color: var(--text-secondary); }
 
 /* ── Fade-in animaciones on scroll ─────────────────────────── */
 .fade-up {
@@ -938,6 +1165,20 @@ footer {
 
   .nav-links { display: none; }
   .hamburger { display: flex; }
+
+  /* Objetivo táctil cómodo: con ratón 30px basta, con el pulgar no. */
+  .lang-btn,
+  .theme-btn,
+  .hamburger {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .hamburger { align-items: center; }
+
+  .contact-alt a {
+    display: inline-block;
+    padding: 6px 0;
+  }
   .mobile-menu.open { display: block; }
 
   .hero-inner {
@@ -962,13 +1203,12 @@ footer {
     grid-template-columns: 1fr;
   }
 
-  .footer-inner {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-sm);
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
   }
 
-  .footer-links { flex-direction: column; gap: var(--space-sm); }
+  .form-row { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 480px) {
@@ -1007,7 +1247,7 @@ footer {
 }
 
 /* Light mode: navbar */
-[data-theme="light"] nav {
+[data-theme="light"] .site-nav {
   background: rgba(250,250,249,0.88);
 }
 
@@ -1017,10 +1257,6 @@ footer {
 }
 
 /* Light mode: scrollbar */
-[data-theme="light"] ::-webkit-scrollbar-track  { background: var(--bg-base); }
-[data-theme="light"] ::-webkit-scrollbar-thumb  { background: var(--border-strong); }
-
-/* Light mode: hero image — menos filtro */
 [data-theme="light"] .hero-image-wrap img {
   filter: contrast(1.02);
 }
@@ -1028,6 +1264,10 @@ footer {
   filter: contrast(1.0);
 }
 
+[data-theme="light"] ::-webkit-scrollbar-track  { background: var(--bg-base); }
+[data-theme="light"] ::-webkit-scrollbar-thumb  { background: var(--border-strong); }
+
+/* Light mode: hero image — menos filtro */
 /* ── Reduced Motion ────────────────────────────────────────── */
 /*
   Respeta la preferencia del sistema operativo.
@@ -1042,11 +1282,6 @@ footer {
     opacity: 1;
     transform: none;
     transition: none;
-  }
-
-  .skill-fill {
-    transition: none;
-    width: var(--w) !important;
   }
 
   .status-dot {
@@ -1069,7 +1304,7 @@ footer {
 
 /* ── Print styles ──────────────────────────────────────────── */
 @media print {
-  nav, .hero-ctas, .projects-cta, footer { display: none; }
+  .site-nav, .hero-ctas, footer { display: none; }
 
   body {
     background: #fff;
@@ -1131,6 +1366,46 @@ select:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: var(--radius-sm);
+}
+
+/* ── Página 404 ────────────────────────────────────────────── */
+.notfound {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: var(--space-xl) var(--space-lg);
+}
+
+.notfound-inner {
+  max-width: 480px;
+  text-align: center;
+}
+
+.notfound-code {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: clamp(3.5rem, 12vw, 6rem);
+  line-height: 1;
+  color: var(--text-accent);
+  letter-spacing: -0.04em;
+  margin-bottom: var(--space-md);
+}
+
+.notfound-title {
+  font-size: clamp(1.3rem, 4vw, 1.75rem);
+  margin-bottom: var(--space-md);
+}
+
+.notfound-text {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xl);
+}
+
+.notfound-actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 /* ── Utility classes extra ─────────────────────────────────── */

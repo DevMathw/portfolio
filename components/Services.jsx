@@ -2,92 +2,106 @@
 import { getTexts } from "@/components/language/texts";
 
 /**
- * Services — Servicios que ofrezco
- * - Cards con hover sutil y microinteracciones
- * - Grid de 3 columnas en desktop
+ * Services — las tres ofertas vendibles
+ *
+ * Antes esta sección listaba 8 capacidades técnicas (Frontend, Backend & APIs,
+ * Bases de datos…). Nadie compra "Backend & APIs": se compra un resultado de
+ * negocio con alcance y precio. Esas 8 capacidades siguen aquí, pero dentro
+ * de la oferta a la que pertenecen, como lo que incluye cada paquete.
+ *
+ * Los precios cambian según el idioma a propósito: un cliente internacional
+ * no sabe interpretar una cifra en COP, y la tarifa internacional es mayor
+ * que la local para el mismo trabajo. ES → mercado colombiano, EN → exterior.
  *
  * Las animaciones on-scroll las gestiona el observer único de page.js.
  */
 
-const SERVICES = [
+export const SERVICES = [
   {
+    id: "sitio",
     name: {
-      en: "Web Applications",
-      es: "Aplicaciones web",
+      en: "Websites that convert",
+      es: "Sitio web que convierte",
     },
     desc: {
-      en: "Modern, fast, and scalable web solutions designed to deliver an exceptional user experience and grow alongside your business.",
-      es: "Soluciones web modernas, rápidas y escalables, diseñadas para ofrecer una experiencia excepcional y crecer junto con tu negocio.",
+      en: "A fast, measurable landing page or company site built to bring you enquiries — not just to look good.",
+      es: "Landing o sitio corporativo rápido y medible, construido para que te contacten, no solo para verse bien.",
+    },
+    includes: {
+      en: [
+        "Custom design and build",
+        "Performance and UX optimisation",
+        "Contact form and analytics",
+        "Responsive and accessible",
+      ],
+      es: [
+        "Diseño e implementación a medida",
+        "Optimización de rendimiento y UX",
+        "Formulario de contacto y analítica",
+        "Responsive y accesible",
+      ],
+    },
+    price: {
+      en: "From USD 800",
+      es: "Desde COP 1.500.000",
     },
   },
   {
+    id: "automatizacion",
     name: {
-      en: "Custom Software",
-      es: "Sistemas a medida",
+      en: "Automation & integrations",
+      es: "Automatización e integraciones",
     },
     desc: {
-      en: "Custom software solutions tailored to your processes, designed to optimize operations and address your business's specific needs.",
-      es: "Software personalizado diseñado para adaptarse a tus procesos, optimizar tu operación y resolver necesidades específicas de tu negocio.",
+      en: "I connect the systems you already use and remove the repetitive manual work: invoicing, CRM, payments, spreadsheets.",
+      es: "Conecto los sistemas que ya usas y elimino el trabajo manual repetitivo: facturación, CRM, pagos, hojas de cálculo.",
+    },
+    includes: {
+      en: [
+        "Third-party API integration",
+        "Internal process automation",
+        "Custom software for your operation",
+        "Database design and optimisation",
+      ],
+      es: [
+        "Integración con APIs de terceros",
+        "Automatización de procesos internos",
+        "Software a medida sobre tu operación",
+        "Diseño y optimización de bases de datos",
+      ],
+    },
+    price: {
+      en: "From USD 1,500",
+      es: "Desde COP 2.500.000",
     },
   },
   {
+    id: "soporte",
     name: {
-      en: "Frontend",
-      es: "Frontend",
+      en: "Support & evolution",
+      es: "Soporte y evolución",
     },
     desc: {
-      en: "Modern, accessible, high-performance interfaces designed to deliver an intuitive and engaging user experience.",
-      es: "Interfaces modernas, accesibles y de alto rendimiento, diseñadas para ofrecer una experiencia de usuario intuitiva y atractiva.",
+      en: "I keep your application running and improving month to month, instead of disappearing after delivery.",
+      es: "Mantengo tu aplicación funcionando y mejorando mes a mes, en vez de desaparecer después de la entrega.",
     },
-  },
-  {
-    name: {
-      en: "Backend & APIs",
-      es: "Backend y APIs",
+    includes: {
+      en: [
+        "Fixes and dependency updates",
+        "Improvements and new features",
+        "Performance monitoring",
+        "Legacy code refactoring",
+      ],
+      es: [
+        "Correcciones y actualizaciones",
+        "Mejoras y nuevas funcionalidades",
+        "Monitoreo de rendimiento",
+        "Refactorización de código heredado",
+      ],
     },
-    desc: {
-      en: "Robust backend architectures and secure, scalable, well-documented APIs designed to integrate seamlessly with your systems and applications.",
-      es: "Arquitecturas backend robustas y APIs seguras, escalables y bien documentadas, diseñadas para integrarse de forma eficiente con tus sistemas y aplicaciones.",
-    },
-  },
-  {
-    name: {
-      en: "Automation",
-      es: "Automatización",
-    },
-    desc: {
-      en: "Process automation designed to eliminate repetitive tasks, streamline workflows, and improve operational efficiency.",
-      es: "Automatización de procesos para reducir tareas repetitivas, optimizar flujos de trabajo y mejorar la eficiencia operativa.",
-    },
-  },
-  {
-    name: {
-      en: "Databases",
-      es: "Bases de datos",
-    },
-    desc: {
-      en: "SQL database design and optimization, tailored to your business needs and built to scale efficiently as your business grows.",
-      es: "Diseño y optimización de bases de datos SQL, adaptadas a las necesidades de tu negocio y preparadas para crecer de forma eficiente.",
-    },
-  },
-  {
-    name: {
-      en: "Performance & UX",
-      es: "Optimización y UX",
-    },
-    desc: {
-      en: "Performance and user experience optimization to make digital products faster, more intuitive, and more efficient.",
-      es: "Optimización de rendimiento y experiencia de usuario para crear productos más rápidos, intuitivos y eficientes.",
-    },
-  },
-  {
-    name: {
-      en: "Maintenance & Refactoring",
-      es: "Mantenimiento y refactorización",
-    },
-    desc: {
-      en: "Modernization and refactoring of existing applications to improve stability, performance, maintainability, and scalability.",
-      es: "Modernización y refactorización de aplicaciones existentes para mejorar su estabilidad, rendimiento, mantenibilidad y escalabilidad.",
+    price: {
+      en: "From USD 350 / month",
+      es: "Desde COP 600.000 / mes",
     },
   },
 ];
@@ -109,20 +123,39 @@ export default function Services({ language }) {
         <div className="services-grid">
           {SERVICES.map((service, i) => {
             // Fallback a inglés si llegara un idioma no soportado
-            const projectName = service.name[language] ?? service.name.en;
-            const projectDesc = service.desc[language] ?? service.desc.en;
+            const name = service.name[language] ?? service.name.en;
+            const desc = service.desc[language] ?? service.desc.en;
+            const includes = service.includes[language] ?? service.includes.en;
+            const price = service.price[language] ?? service.price.en;
 
             return (
-              <article key={service.name.en} className="project-card fade-up" data-delay={i % 2 === 0 ? "1" : "2"}>
-                {/* Body */}
+              /* project-card aporta el chrome compartido de tarjeta (fondo,
+                 borde, hover); service-card solo añade el layout propio. */
+              <article
+                key={service.id}
+                className="project-card service-card fade-up"
+                data-delay={String(i + 1)}
+              >
                 <div>
-                  <h3 className="project-name">{projectName}</h3>
-                  <p className="project-desc">{projectDesc}</p>
+                  <h3 className="project-name">{name}</h3>
+                  <p className="project-desc">{desc}</p>
                 </div>
+
+                <ul className="service-includes">
+                  {includes.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+
+                <p className="service-price">
+                  <span className="badge">{price}</span>
+                </p>
               </article>
             );
           })}
         </div>
+
+        <p className="services-note fade-up">{t.note}</p>
       </div>
     </section>
   );

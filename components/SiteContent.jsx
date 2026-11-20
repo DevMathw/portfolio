@@ -2,25 +2,27 @@
 import { useEffect, useCallback } from "react";
 import Navbar from "@/components/Navbar";
 import Header from "@/components/Header";
-import About from "@/components/About";
-import Service from "@/components/Services";
+import Services from "@/components/Services";
 import Work from "@/components/Work";
+import Experience from "@/components/Experience";
+import About from "@/components/About";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import { useHtmlPreference } from "@/components/hooks/useHtmlPreference";
-import { DEFAULT_LANGUAGE, LANGUAGES } from "@/components/language/texts";
 
 /**
- * page.js
- * - Tema e idioma viven como atributos del <html> (data-theme / lang), que
- *   el script inline de layout.js ya aplica antes del primer paint.
- *   useHtmlPreference los lee sin duplicar estado ni provocar parpadeos.
- * - Un único IntersectionObserver para todas las animaciones .fade-up.
+ * SiteContent — la página, como componente de cliente.
+ *
+ * El idioma ya NO es estado: lo fija la ruta (/en, /es) y llega como prop
+ * desde el componente de servidor. Cambiar de idioma es navegar, lo que
+ * además hace que cada versión tenga su propia URL indexable.
+ *
+ * El tema sí sigue siendo preferencia del visitante, no de la URL.
  */
 
 const THEMES = ["dark", "light"];
 
-export default function Home() {
+export default function SiteContent({ language }) {
   const [theme, setTheme] = useHtmlPreference({
     attribute: "data-theme",
     storageKey: "mat-dev-theme",
@@ -28,26 +30,28 @@ export default function Home() {
     serverValue: "dark",
   });
 
-  const [language, setLanguage] = useHtmlPreference({
-    attribute: "lang",
-    storageKey: "mat-dev-lang",
-    values: LANGUAGES,
-    serverValue: DEFAULT_LANGUAGE,
-  });
-
   const toggleTheme = useCallback(
     () => setTheme(theme === "dark" ? "light" : "dark"),
     [theme, setTheme]
   );
 
-  const toggleLanguage = useCallback(
-    () => setLanguage(language === "en" ? "es" : "en"),
-    [language, setLanguage]
-  );
+  // Cambiar de idioma es una navegación de cliente, y en ella React
+  // re-renderiza <html> y se lleva por delante el data-theme (el script
+  // anti-flash solo corre en carga completa). Lo reponemos desde el
+  // almacenamiento para que el tema elegido sobreviva al cambio de idioma.
+  useEffect(() => {
+    const el = document.documentElement;
+    if (THEMES.includes(el.getAttribute("data-theme"))) return;
+    let saved = null;
+    try {
+      saved = localStorage.getItem("mat-dev-theme");
+    } catch {
+      /* almacenamiento no disponible */
+    }
+    el.setAttribute("data-theme", THEMES.includes(saved) ? saved : "dark");
+  });
 
   // ── Observer único de fade-up ────────────────────────────────
-  // Antes había cuatro observers (uno global y uno por sección) haciendo
-  // exactamente el mismo trabajo sobre los mismos elementos.
   useEffect(() => {
     // Si el usuario prefiere menos movimiento, el CSS ya deja todo visible.
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -57,12 +61,6 @@ export default function Home() {
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
           entry.target.classList.add("visible");
-          // Las barras de skills comparten el mismo disparador. Se observa
-          // el contenedor (.skill-item) y no la barra: .skill-fill nace con
-          // width:0 y un elemento sin área es un objetivo poco fiable.
-          entry.target
-            .querySelectorAll(".skill-fill")
-            .forEach((bar) => bar.classList.add("animate"));
           observer.unobserve(entry.target);
         }
       },
@@ -70,7 +68,7 @@ export default function Home() {
     );
 
     document
-      .querySelectorAll(".fade-up:not(.visible), .skill-item")
+      .querySelectorAll(".fade-up:not(.visible)")
       .forEach((el) => observer.observe(el));
 
     return () => observer.disconnect();
@@ -80,14 +78,14 @@ export default function Home() {
     <>
       <Navbar
         language={language}
-        toggleLanguage={toggleLanguage}
         theme={theme}
         toggleTheme={toggleTheme}
       />
       <Header language={language} />
-      <About language={language} />
-      <Service language={language} />
+      <Services language={language} />
       <Work language={language} />
+      <Experience language={language} />
+      <About language={language} />
       <Contact language={language} />
       <Footer language={language} />
     </>

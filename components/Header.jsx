@@ -6,13 +6,10 @@ import { getTexts } from "@/components/language/texts";
  * Header — sección hero
  * - Layout de dos columnas con imagen
  * - Dot de disponibilidad animado
- * - CTAs con jerarquía clara (contacto primario, CV secundario)
+ * - Titular orientado a la oferta: dice qué resuelve, no qué cargo tiene
+ * - CTAs de cliente (iniciar proyecto / ver servicios). El CV vive en About:
+ *   es material secundario y aquí competía con la llamada a la acción.
  */
-
-const CV_FILES = {
-  en: "/cv_mat_en.pdf",
-  es: "/cv_mat_es.pdf",
-};
 
 export default function Header({ language }) {
   const t = getTexts(language).header;
@@ -34,7 +31,7 @@ export default function Header({ language }) {
 
           {/* Heading */}
           <h1 className="fade-up" data-delay="1">
-            {t.greeting} <span className="accent">{t.name}</span>
+            {t.headline} <span className="accent">{t.headlineAccent}</span>
           </h1>
 
           {/* Subtitle */}
@@ -51,26 +48,21 @@ export default function Header({ language }) {
                 <polyline points="12 5 19 12 12 19" />
               </svg>
             </button>
-            <a href={CV_FILES[language] ?? CV_FILES.en} download className="btn btn-ghost">
+            <button className="btn btn-ghost" onClick={() => scrollTo("service")}>
               {t.cta2}
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="7 10 12 15 17 10" />
-                <line x1="12" y1="15" x2="12" y2="3" />
-              </svg>
-            </a>
+            </button>
           </div>
         </div>
 
         {/* Right: image */}
         <div className="hero-image-wrap fade-up" data-delay="2">
-          {/* 512×512 son las dimensiones reales del archivo: declararlas
+          {/* 960×960 son las dimensiones reales del archivo: declararlas
               correctamente evita distorsión y desplazamiento de layout (CLS). */}
           <Image
             src="/logoMain.png"
             alt={t.imageAlt}
-            width={512}
-            height={512}
+            width={960}
+            height={960}
             sizes="(max-width: 768px) 280px, 380px"
             priority
           />

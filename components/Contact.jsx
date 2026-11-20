@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { getTexts } from "@/components/language/texts";
+import { SERVICES } from "@/components/Services";
 
 // ── Constantes ────────────────────────────────────────────────
 const MAX = { name: 150, email: 256, message: 500 };
@@ -20,7 +21,7 @@ const FIELDS = ["name", "email", "message"];
 
 // ── Componente principal ──────────────────────────────────────
 export default function Contact({ language }) {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", message: "", projectType: "", budget: "" });
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false); // ¿se intentó enviar?
   const [loading, setLoading] = useState(false);
@@ -98,6 +99,8 @@ export default function Contact({ language }) {
     formData.append("name", form.name);
     formData.append("email", form.email);
     formData.append("message", form.message);
+    formData.append("project_type", form.projectType || "—");
+    formData.append("budget", form.budget || "—");
     formData.append("botcheck", ""); // honeypot: los bots lo rellenan
 
     try {
@@ -106,7 +109,7 @@ export default function Contact({ language }) {
 
       if (data.success) {
         setSuccess(true);
-        setForm({ name: "", email: "", message: "" });
+        setForm({ name: "", email: "", message: "", projectType: "", budget: "" });
         setErrors({});
         setSubmitted(false);
       } else {
@@ -206,6 +209,51 @@ export default function Contact({ language }) {
                 {renderMeta("email")}
               </div>
 
+              {/* ── Calificación: tipo de proyecto y presupuesto ── */}
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="contact-projectType">
+                    {t.projectType} <span className="form-optional">({t.optional})</span>
+                  </label>
+                  <select
+                    id="contact-projectType"
+                    name="projectType"
+                    value={form.projectType}
+                    onChange={handleChange}
+                  >
+                    <option value="">{t.choose}</option>
+                    {SERVICES.map((sv) => {
+                      const label = sv.name[language] ?? sv.name.en;
+                      return (
+                        <option key={sv.id} value={label}>
+                          {label}
+                        </option>
+                      );
+                    })}
+                    <option value={t.other}>{t.other}</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="contact-budget">
+                    {t.budget} <span className="form-optional">({t.optional})</span>
+                  </label>
+                  <select
+                    id="contact-budget"
+                    name="budget"
+                    value={form.budget}
+                    onChange={handleChange}
+                  >
+                    <option value="">{t.choose}</option>
+                    {t.budgets.map((b) => (
+                      <option key={b} value={b}>
+                        {b}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
               {/* ── Message ── */}
               <div className="form-group">
                 <label htmlFor="contact-message">{t.message}</label>
@@ -240,6 +288,18 @@ export default function Contact({ language }) {
                 </button>
               </div>
             </form>
+
+            {/* Mucha gente no rellena formularios: se le da una vía directa
+                y una expectativa de respuesta, que baja la fricción. */}
+            <p className="contact-alt">
+              <span>
+                {t.altIntro}{" "}
+                <a href="mailto:dev.mathew.coded@gmail.com">
+                  dev.mathew.coded@gmail.com
+                </a>
+              </span>
+              <span className="contact-reply">{t.replyTime}</span>
+            </p>
           </div>
         </div>
       </section>

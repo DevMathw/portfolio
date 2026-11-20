@@ -3,20 +3,19 @@ import { getTexts } from "@/components/language/texts";
 
 /**
  * About
- * - Bio + stack principal con barras de progreso
- * - Tecnologías secundarias como chips
+ * - Bio + stack principal y tecnologías secundarias, como chips
  *
- * Las animaciones on-scroll las gestiona el observer único de page.js;
- * este componente solo marca los elementos con .fade-up / .skill-item.
+ * Las animaciones on-scroll las gestiona el observer único de SiteContent.
  */
 
-const SKILLS_PRIMARY = [
-  { name: "PHP", pct: 95 },
-  { name: "CodeIgniter", pct: 95 },
-  { name: "JavaScript", pct: 90 },
-  { name: "MySQL", pct: 95 },
-  { name: "PostgreSQL", pct: 90 },
-];
+// Sin porcentajes: un "95%" autoasignado no es comprobable y a un cliente
+// no le dice nada. Qué usas a diario sí.
+const SKILLS_PRIMARY = ["PHP", "CodeIgniter", "JavaScript", "MySQL", "PostgreSQL"];
+
+const CV_FILES = {
+  en: "/cv_mat_en.pdf",
+  es: "/cv_mat_es.pdf",
+};
 
 const SKILLS_TAGS = [
   "React", "Node.js", "Python", "Django",
@@ -45,22 +44,31 @@ export default function About({ language }) {
                 </span>
               ))}
             </div>
+
+            {/* El CV es material secundario: vive aquí, junto a la bio, y no
+                compitiendo con la llamada a la acción del hero. */}
+            <a
+              className="cv-link"
+              href={CV_FILES[language] ?? CV_FILES.en}
+              download
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              {t.cvLink}
+            </a>
           </div>
 
           {/* Skills */}
           <div className="fade-up" data-delay="2">
             <p className="section-label section-label--block">{t.skillsTitle}</p>
-            <div className="skills-list">
-              {SKILLS_PRIMARY.map((skill) => (
-                <div className="skill-item" key={skill.name}>
-                  <div className="skill-header">
-                    <span className="skill-name">{skill.name}</span>
-                    <span className="skill-pct">{skill.pct}%</span>
-                  </div>
-                  <div className="skill-track" role="meter" aria-label={skill.name} aria-valuenow={skill.pct} aria-valuemin={0}aria-valuemax={100}>
-                    <div className="skill-fill" style={{ "--w": `${skill.pct}%` }} />
-                  </div>
-                </div>
+            <div className="skill-tags">
+              {SKILLS_PRIMARY.map((tech) => (
+                <span key={tech} className="skill-tag skill-tag--core">
+                  {tech}
+                </span>
               ))}
             </div>
           </div>
